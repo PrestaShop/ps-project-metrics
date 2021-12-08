@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+    <div class="page-header">
+        <h1>{{ login }}</h3>
+    </div>
+
+    <dl class="dl-horizontal">
+
+      {% for data in stats %}
+
+        <dt>On {{ data['day'] }}</dt>
+        <dd>
+            reviewed {{ data['total'] }} pull requests: {{ data['PR'] | raw }}
+        </dd>
+
+      {% endfor %}
+
+{% endblock %}
