@@ -5,6 +5,11 @@
         <h1>{{ login }}</h3>
     </div>
 
+    <p>
+        You can see the same data on your personal GitHub page:
+        <a href="https://github.com/{{ login }}">https://github.com/{{ login }}</a>
+    </p>
+
     <dl class="dl-horizontal">
 
       {% for data in stats %}
