@@ -67,7 +67,7 @@ class MainController extends AbstractController
      *
      * @return array
      */
-    private function getTeamStats(int $daysNumber)
+    private function getTeamStats(int $daysNumber): array
     {
         $pdo = $this->pdoProvider->getPDO();
 
@@ -110,7 +110,7 @@ class MainController extends AbstractController
      *
      * @return array
      */
-    private function getDeveloperStats(string $login)
+    private function getDeveloperStats(string $login): array
     {
         $pdo = $this->pdoProvider->getPDO();
 
@@ -138,7 +138,7 @@ class MainController extends AbstractController
      *
      * @return array
      */
-    private function addOrInsert(array $groupedByLogin, string $login, string $day, int $total)
+    private function addOrInsert(array $groupedByLogin, string $login, string $day, int $total): array
     {
         if (!array_key_exists($login, $groupedByLogin)) {
             $groupedByLogin[$login] = [];
@@ -156,20 +156,17 @@ class MainController extends AbstractController
      *
      * @return string
      */
-    private function formatPRs(string $PRsString)
+    private function formatPRs(string $PRsString): string
     {
         if ($PRsString === '""') {
             return '';
         }
-
         $html = '';
 
         $isFirst = true;
         $items = explode(';', $PRsString);
 
         foreach ($items as $PR) {
-
-
             $PR = str_replace(['"', "'"], "", $PR);
             if ($isFirst) {
                 $html .= sprintf(

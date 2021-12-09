@@ -1,24 +1,25 @@
 {% extends 'base.html.twig' %}
 {% block body %}
 
-    <div class="page-header">
-        <h1>{{ login }}</h1>
-    </div>
+  <div class="page-header">
+    <h1>{{ login }}</h1>
+  </div>
 
-    <p>
-        You can see the same data on your personal GitHub page:
-        <a href="https://github.com/{{ login }}">https://github.com/{{ login }}</a>
-    </p>
+  <p>
+    You can see the same data on your personal GitHub page:
+    <a href="https://github.com/{{ login }}">https://github.com/{{ login }}</a>
+  </p>
 
-    <dl class="dl-horizontal">
+  <dl class="dl-horizontal">
 
-      {% for data in stats %}
+    {% for data in stats %}
+      <dt>On {{ data['day'] }}</dt>
+      <dd>
+        reviewed {{ data['total'] }} pull requests: {{ data['PR'] | raw }}
+      </dd>
 
-        <dt>On {{ data['day'] }}</dt>
-        <dd>
-            reviewed {{ data['total'] }} pull requests: {{ data['PR'] | raw }}
-        </dd>
+    {% endfor %}
 
-      {% endfor %}
+  </dl>
 
 {% endblock %}

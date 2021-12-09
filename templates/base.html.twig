@@ -1,50 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="/img/favicon.ico">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="/img/favicon.ico">
 
-    <title>Fruitdelapassion Dashboard</title>
+  <title>Fruitdelapassion Dashboard</title>
 
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/dashboard.css?v=1" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/dashboard.css?v=1" rel="stylesheet">
 
-    {% block javascripts %}
-        <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    {% endblock %}
+  {% block javascripts %}
+    <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  {% endblock %}
 </head>
 
 <body>
 
 <div class="container">
 
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="/">
-                    Fruitdelapassion Dashboard
-                </a>
-            </div>
-        </div>
-    </nav>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/">
+          Fruitdelapassion Dashboard
+        </a>
+      </div>
+    </div>
+  </nav>
 
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+  <body>
+  {% block body %}{% endblock %}
+  </body>
 
 </div>
 {% block footer %}
-    <footer>
-        <div class="container">
-            <p>
-                Data fetched from the <a href="https://docs.github.com/en/graphql">GitHub GraphQL API</a>.
-                <br/>You can see the same data on your personal GitHub page (see <a href="https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/managing-contribution-graphs-on-your-profile/viewing-contributions-on-your-profile">GitHub doc</a>) or explore it using the API explorer:
-                <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">https://docs.github.com/en/graphql/overview/explorer</a>
-            </p>
-        </div>
-    </footer>
+  <footer>
+    <div class="container">
+      <p>
+        Data fetched from the <a href="https://docs.github.com/en/graphql">GitHub GraphQL API</a>.
+        <br/>You can see the same data on your personal GitHub page (see <a
+            href="https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/managing-contribution-graphs-on-your-profile/viewing-contributions-on-your-profile">GitHub
+          doc</a>) or explore it using the API explorer:
+        <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">https://docs.github.com/en/graphql/overview/explorer</a>
+      </p>
+    </div>
+  </footer>
 {% endblock %}
 </body>
 </html>
