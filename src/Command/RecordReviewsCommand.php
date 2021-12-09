@@ -33,8 +33,7 @@ class RecordReviewsCommand extends Command
 			        'dry-run',
 			        null,
 			        InputOption::VALUE_OPTIONAL,
-			        'Dry run',
-			        1
+			        'Dry run'
 			    )
         ;
     }
