@@ -1,6 +1,6 @@
 # fruitdelapassion application
 
-Symfony 4 application that collects review statistics collected.
+Symfony 5 application that collects review statistics collected.
 
 ## Install
 

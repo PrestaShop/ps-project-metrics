@@ -5,7 +5,7 @@
   "minimum-stability": "stable",
   "prefer-stable": true,
   "require": {
-    "php": ">=7.2.5",
+    "php": ">=7.4",
     "ext-ctype": "*",
     "ext-curl": "*",
     "ext-iconv": "*",
@@ -21,8 +21,8 @@
     "symfony/runtime": "5.4.*",
     "symfony/twig-bundle": "5.4.*",
     "symfony/yaml": "5.4.*",
-    "twig/extra-bundle": "^2.12|^3.0",
-    "twig/twig": "^2.12|^3.0"
+    "twig/extra-bundle": "^3.0",
+    "twig/twig": "^3.0"
   },
   "config": {
     "optimize-autoloader": true,
