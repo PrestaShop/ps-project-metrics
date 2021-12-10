@@ -28,9 +28,17 @@ class MainController extends AbstractController
      */
     public function home(): Response
     {
-        $lastSevenAndDays = $this->getTeamStats(56);
+        $lastSevenAndDays = $this->getTeamStatsGroupedByLogin(56, 0);
 
-        return $this->render('main.html.twig', $lastSevenAndDays);
+        $lastThirtyDays = $this->getTeamStatsGroupedByDay(240, 56);
+
+        return $this->render(
+            'main.html.twig',
+            [
+                'lastSeven' => $lastSevenAndDays,
+                'lastThirty' => $lastThirtyDays,
+            ]
+        );
     }
 
     /**
@@ -40,18 +48,7 @@ class MainController extends AbstractController
      */
     public function viewDeveloper(string $login): Response
     {
-        $developer = [
-            'PierreRambaud',      # Pierre R.
-            'matks',              # Mathieu F.
-            'jolelievre',         # Jonathan L.
-            'matthieu-rolland',   # Matthieu R.
-            'Progi1984',          # Franck L.
-            'atomiix',            # Thomas B.
-            'NeOMakinG',          # Valentin S.
-            'sowbiba',            # Ibrahima S.
-        ];
-
-        if (!in_array($login, $developer)) {
+        if (!in_array($login, $this->getTeam())) {
             throw $this->createNotFoundException('No developer');
         }
 
@@ -67,11 +64,11 @@ class MainController extends AbstractController
      *
      * @return array
      */
-    private function getTeamStats(int $daysNumber): array
+    private function getTeamStatsGroupedByLogin(int $recordsNumber): array
     {
         $pdo = $this->pdoProvider->getPDO();
 
-        $sql = 'SELECT login, day, total FROM reviews ORDER BY day ASC LIMIT ' . $daysNumber;
+        $sql = 'SELECT login, day, total FROM reviews ORDER BY day DESC LIMIT ' . $recordsNumber;
         $result = $pdo->query($sql)->fetchAll();
 
         $days = [];
@@ -98,10 +95,47 @@ class MainController extends AbstractController
             $total += (int)$item['total'];
         }
 
+        foreach ($groupedByLogin as $login => $group) {
+            $groupedByLogin[$login] = array_reverse($group);
+        }
+
         return [
-            'days' => $days,
+            'days' => array_reverse($days),
             'lastSeven' => $groupedByLogin,
             'totalTeam' => $total,
+        ];
+    }
+
+    /**
+     * @param int $daysNumber
+     *
+     * @return array
+     */
+    private function getTeamStatsGroupedByDay(int $recordsNumber, int $skipRecordsNumber): array
+    {
+        $pdo = $this->pdoProvider->getPDO();
+
+        $sql = 'SELECT login, day, total FROM reviews ORDER BY day DESC LIMIT ' . $recordsNumber . ' OFFSET '.$skipRecordsNumber;
+        $result = $pdo->query($sql)->fetchAll();
+
+        $groupedByDay = [];
+
+        foreach ($result as $item) {
+            $groupedByDay = $this->addOrInsert(
+                $groupedByDay,
+                $item['day'],
+                $item['login'],
+                $item['total']
+            );
+        }
+
+        foreach ($groupedByDay as $day => $group) {
+            $groupedByDay[$day] = $this->reorderByTeamOrder($group);
+        }
+
+        return [
+            'teamMembers' => $this->getTeam(),
+            'lastThirty' => $groupedByDay,
         ];
     }
 
@@ -188,5 +222,38 @@ class MainController extends AbstractController
         }
 
         return $html;
+    }
+
+    /**
+     * @return array
+     */
+    private function getTeam(bool $asKeys = false): array
+    {
+        $team = [
+            'PierreRambaud' => [],      # Pierre R.
+            'matks' => [],              # Mathieu F.
+            'jolelievre' => [],         # Jonathan L.
+            'matthieu-rolland' => [],   # Matthieu R.
+            'Progi1984' => [],          # Franck L.
+            'atomiix' => [],            # Thomas B.
+            'NeOMakinG' => [],          # Valentin S.
+            'sowbiba' => [],            # Ibrahima S.
+        ];
+
+        if ($asKeys) {
+            return $team;
+        }
+        return array_keys($team);
+    }
+
+    private function reorderByTeamOrder(array $groupedByLogin)
+    {
+        $team = $this->getTeam(true);
+
+        foreach ($groupedByLogin as $login => $group) {
+            $team[$login] = $group;
+        }
+
+        return $team;
     }
 }
