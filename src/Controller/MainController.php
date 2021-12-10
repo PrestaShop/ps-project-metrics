@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Helper\TeamHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use App\Database\PDOProvider;
@@ -48,7 +49,7 @@ class MainController extends AbstractController
      */
     public function viewDeveloper(string $login): Response
     {
-        if (!in_array($login, $this->getTeam())) {
+        if (!in_array($login, TeamHelper::getTeam())) {
             throw $this->createNotFoundException('No developer');
         }
 
@@ -109,7 +110,7 @@ class MainController extends AbstractController
     /**
      * @param int $recordsNumber
      * @param int $skipRecordsNumber
-     * 
+     *
      * @return array
      */
     private function getTeamStatsGroupedByDay(int $recordsNumber, int $skipRecordsNumber): array
@@ -135,7 +136,7 @@ class MainController extends AbstractController
         }
 
         return [
-            'teamMembers' => $this->getTeam(),
+            'teamMembers' => TeamHelper::getTeam(),
             'lastThirty' => $groupedByDay,
         ];
     }
@@ -226,35 +227,13 @@ class MainController extends AbstractController
     }
 
     /**
-     * @return array
-     */
-    private function getTeam(bool $asKeys = false): array
-    {
-        $team = [
-            'PierreRambaud' => [],      # Pierre R.
-            'matks' => [],              # Mathieu F.
-            'jolelievre' => [],         # Jonathan L.
-            'matthieu-rolland' => [],   # Matthieu R.
-            'Progi1984' => [],          # Franck L.
-            'atomiix' => [],            # Thomas B.
-            'NeOMakinG' => [],          # Valentin S.
-            'sowbiba' => [],            # Ibrahima S.
-        ];
-
-        if ($asKeys) {
-            return $team;
-        }
-        return array_keys($team);
-    }
-
-    /**
      * @param array $groupedByLogin
      *
      * @return array
      */
     private function reorderByTeamOrder(array $groupedByLogin): array
     {
-        $team = $this->getTeam(true);
+        $team = TeamHelper::getTeam(true);
 
         foreach ($groupedByLogin as $login => $group) {
             $team[$login] = $group;

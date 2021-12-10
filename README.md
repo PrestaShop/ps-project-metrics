@@ -8,6 +8,11 @@ Symfony 4 application that collects review statistics collected.
 composer install
 ```
 
+You need
+
+- a MySQL database
+- a GitHub token with public access
+
 You need to provide 7 parameters using a `.env` file or environment variables.
 
 ```
@@ -26,11 +31,13 @@ APP_GH_TOKEN=...
 Browse `/` using a webserver to see the dashboard.
 
 Example:
+
 ```
 symfony server:start
 ```
 
-Run command to collect data of previous day
+Run command to collect data of previous worked day
+
 ```
 php bin/console matks:record
 ```
@@ -39,4 +46,12 @@ The command can be run as dry-run
 
 ```
 php bin/console matks:record --dry-run=true
+```
+
+## Test
+
+Run tests using phpunit
+
+```
+vendor/bin/phpunit
 ```

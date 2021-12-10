@@ -2,6 +2,8 @@
 
 namespace App\Command;
 
+use App\Helper\DayComputer;
+use App\Helper\TeamHelper;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -56,26 +58,22 @@ class RecordReviewsCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $isDryRun = $input->getOption('dry-run');
-
         $pdo = $this->pdoProvider->getPDO();
 
-        $day = (new DateTime())->format('Y-m-d');
-        $yesterday = (new DateTime('yesterday'))->format('Y-m-d');
+        $day = new DateTime();
+        $previousWorkedDay = (DayComputer::getPreviousWorkedDayFromDateTime($day))->format('Y-m-d');
+        $output->writeln(sprintf('Record reviews for %s', $previousWorkedDay));
 
-        $team = [
-            'PierreRambaud',      # Pierre R.
-            'matks',              # Matthieu F.
-            'jolelievre',         # Jonathan L.
-            'matthieu-rolland',   # Matthieu R.
-            'Progi1984',          # Franck L.
-            'atomiix',            # Thomas B.
-            'NeOMakinG',          # Valentin S.
-            'sowbiba',            # Ibrahima S.
-        ];
+        $team = TeamHelper::getTeam();
 
         foreach ($team as $login) {
             $dataFromAPI = json_decode(
-                $this->getReviewsByDay($this->githubToken, $login, $yesterday . "T00:00:00", $yesterday . "T23:59:59"),
+                $this->getReviewsByDay(
+                    $this->githubToken,
+                    $login,
+                    $previousWorkedDay . "T00:00:00",
+                    $previousWorkedDay . "T23:59:59"
+                ),
                 true
             );
 
@@ -83,7 +81,6 @@ class RecordReviewsCommand extends Command
             $edge = reset($edges);
 
             $PRurls = [];
-
             foreach ($edge as $dataBag) {
                 $PR = $dataBag['node']['pullRequest'];
                 $url = $PR['url'];
@@ -95,10 +92,10 @@ class RecordReviewsCommand extends Command
                     '%s reviewed %d reviews on %s',
                     $login,
                     count($PRurls),
-                    $yesterday
+                    $previousWorkedDay
                 ));
             } else {
-                $this->insertReview($pdo, $login, $PRurls, $yesterday);
+                $this->insertReview($pdo, $login, $PRurls, $previousWorkedDay);
             }
         }
 
@@ -163,8 +160,6 @@ class RecordReviewsCommand extends Command
             )
         );
 
-        $response = curl_exec($chObj);
-
-        return $response;
+        return curl_exec($chObj);
     }
 }
