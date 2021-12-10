@@ -4,41 +4,41 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Database\Entity\ReviewStat;
 use App\Helper\DayComputer;
 use App\Helper\TeamHelper;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use PDO;
-use App\Database\PDOProvider;
 use DateTime;
 
 class RecordReviewsCommand extends Command
 {
     /**
-     * @var PDOProvider
+     * @var EntityManager
      */
-    private $pdoProvider;
+    private $entityManager;
 
     /**
      * @var string
      */
     private $githubToken;
 
+    /** @var string */
+    protected static $defaultName = 'matks:record';
+
     /**
-     * @param PDOProvider $provider
+     * @param EntityManager $entityManager
      * @param string $githubToken
      */
-    public function __construct(PDOProvider $provider, string $githubToken)
+    public function __construct(EntityManager $entityManager, string $githubToken)
     {
-        $this->pdoProvider = $provider;
+        $this->entityManager = $entityManager;
         $this->githubToken = $githubToken;
         parent::__construct();
     }
-
-    /** @var string */
-    protected static $defaultName = 'matks:record';
 
     protected function configure(): void
     {
@@ -60,7 +60,6 @@ class RecordReviewsCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $isDryRun = $input->getOption('dry-run');
-        $pdo = $this->pdoProvider->getPDO();
 
         $day = new DateTime();
         $previousWorkedDay = (DayComputer::getPreviousWorkedDayFromDateTime($day))->format('Y-m-d');
@@ -89,9 +88,11 @@ class RecordReviewsCommand extends Command
                     $previousWorkedDay
                 ));
             } else {
-                $this->insertReview($pdo, $login, $PRurls, $previousWorkedDay);
+                $this->insertReview($login, $PRurls, $previousWorkedDay);
             }
         }
+
+        $this->entityManager->flush();
 
         return 0;
     }
@@ -102,10 +103,16 @@ class RecordReviewsCommand extends Command
      * @param array $PRs
      * @param string $day
      */
-    private function insertReview(PDO $pdo, string $login, array $PRs, string $day)
+    private function insertReview(string $login, array $PRs, string $day)
     {
-        $sql = "INSERT INTO reviews (login, PR, day, total) VALUES (?, ?, ?, ?)";
-        $pdo->prepare($sql)->execute([$login, '"' . implode('";"', $PRs) . '"', $day, count($PRs)]);
+        $reviewStatRecord = new ReviewStat(
+            $login,
+            '"' . implode('";"', $PRs) . '"',
+            new DateTime($day),
+            count($PRs)
+        );
+
+        $this->entityManager->persist($reviewStatRecord);
     }
 
     /**

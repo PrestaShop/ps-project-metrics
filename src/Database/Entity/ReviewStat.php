@@ -48,4 +48,18 @@ class ReviewStat
      * @ORM\Column(name="total", type="integer", nullable=true)
      */
     private $total;
+
+    /**
+     * @param string|null $login
+     * @param string|null $pr
+     * @param \DateTime|null $day
+     * @param int|null $total
+     */
+    public function __construct(?string $login, ?string $pr, ?\DateTime $day, ?int $total)
+    {
+        $this->login = $login;
+        $this->pr = $pr;
+        $this->day = $day;
+        $this->total = $total;
+    }
 }

@@ -11,7 +11,7 @@ services:
 
   App\Command\RecordReviewsCommand:
     arguments:
-      - '@App\Database\PDOProvider'
+      - '@doctrine.orm.default_entity_manager'
       - '%env(resolve:APP_GH_TOKEN)%'
 
   App\Database\PDOProvider:
