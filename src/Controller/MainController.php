@@ -60,7 +60,7 @@ class MainController extends AbstractController
     }
 
     /**
-     * @param int $daysNumber
+     * @param int $recordsNumber
      *
      * @return array
      */
@@ -107,15 +107,16 @@ class MainController extends AbstractController
     }
 
     /**
-     * @param int $daysNumber
-     *
+     * @param int $recordsNumber
+     * @param int $skipRecordsNumber
+     * 
      * @return array
      */
     private function getTeamStatsGroupedByDay(int $recordsNumber, int $skipRecordsNumber): array
     {
         $pdo = $this->pdoProvider->getPDO();
 
-        $sql = 'SELECT login, day, total FROM reviews ORDER BY day DESC LIMIT ' . $recordsNumber . ' OFFSET '.$skipRecordsNumber;
+        $sql = 'SELECT login, day, total FROM reviews ORDER BY day DESC LIMIT ' . $recordsNumber . ' OFFSET ' . $skipRecordsNumber;
         $result = $pdo->query($sql)->fetchAll();
 
         $groupedByDay = [];
@@ -246,7 +247,12 @@ class MainController extends AbstractController
         return array_keys($team);
     }
 
-    private function reorderByTeamOrder(array $groupedByLogin)
+    /**
+     * @param array $groupedByLogin
+     *
+     * @return array
+     */
+    private function reorderByTeamOrder(array $groupedByLogin): array
     {
         $team = $this->getTeam(true);
 
