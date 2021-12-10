@@ -7,8 +7,12 @@
   "require": {
     "php": ">=7.2.5",
     "ext-ctype": "*",
+    "ext-curl": "*",
     "ext-iconv": "*",
     "ext-json": "*",
+    "ext-pdo": "*",
+    "doctrine/doctrine-bundle": "^2.5",
+    "doctrine/orm": "^2.10",
     "phpunit/phpunit": "^9.5",
     "symfony/console": "5.4.*",
     "symfony/dotenv": "5.4.*",
@@ -18,9 +22,7 @@
     "symfony/twig-bundle": "5.4.*",
     "symfony/yaml": "5.4.*",
     "twig/extra-bundle": "^2.12|^3.0",
-    "twig/twig": "^2.12|^3.0",
-    "ext-pdo": "*",
-    "ext-curl": "*"
+    "twig/twig": "^2.12|^3.0"
   },
   "config": {
     "optimize-autoloader": true,
