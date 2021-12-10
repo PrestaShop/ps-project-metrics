@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Command;
 
 use App\Helper\DayComputer;
@@ -77,15 +79,7 @@ class RecordReviewsCommand extends Command
                 true
             );
 
-            $edges = reset($dataFromAPI['data']['user']['contributionsCollection']);
-            $edge = reset($edges);
-
-            $PRurls = [];
-            foreach ($edge as $dataBag) {
-                $PR = $dataBag['node']['pullRequest'];
-                $url = $PR['url'];
-                $PRurls[] = $url;
-            }
+            $PRurls = $this->extractPRUrls($dataFromAPI);
 
             if ($isDryRun) {
                 $output->writeln(sprintf(
@@ -161,5 +155,25 @@ class RecordReviewsCommand extends Command
         );
 
         return curl_exec($chObj);
+    }
+
+    /**
+     * @param array $dataFromAPI
+     *
+     * @return array
+     */
+    protected function extractPRUrls(array $dataFromAPI): array
+    {
+        $edges = reset($dataFromAPI['data']['user']['contributionsCollection']);
+        $edge = reset($edges);
+
+        $urls = [];
+        foreach ($edge as $dataBag) {
+            $PR = $dataBag['node']['pullRequest'];
+            $url = $PR['url'];
+            $urls[] = $url;
+        }
+
+        return $urls;
     }
 }

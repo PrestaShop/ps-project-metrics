@@ -1,22 +1,26 @@
 parameters:
 
 services:
-    _defaults:
-        autowire: true      # Automatically injects dependencies in your services.
-        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+  _defaults:
+    autowire: true      # Automatically injects dependencies in your services.
+    autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
-    App\Controller\MainController:
-        arguments:
-            - '@App\Database\PDOProvider'
+  App\Controller\MainController:
+    arguments:
+      - '@App\Helper\StatsService'
 
-    App\Command\RecordReviewsCommand:
-        arguments:
-            - '@App\Database\PDOProvider'
-            - '%env(resolve:APP_GH_TOKEN)%'
+  App\Command\RecordReviewsCommand:
+    arguments:
+      - '@App\Database\PDOProvider'
+      - '%env(resolve:APP_GH_TOKEN)%'
 
-    App\Database\PDOProvider:
-        arguments:
-            - '%env(resolve:APP_DB_HOST)%'
-            - '%env(resolve:APP_DB_TABLE)%'
-            - '%env(resolve:APP_DB_USER)%'
-            - '%env(resolve:APP_DB_PASSWORD)%'
+  App\Database\PDOProvider:
+    arguments:
+      - '%env(resolve:APP_DB_HOST)%'
+      - '%env(resolve:APP_DB_TABLE)%'
+      - '%env(resolve:APP_DB_USER)%'
+      - '%env(resolve:APP_DB_PASSWORD)%'
+
+  App\Helper\StatsService:
+    arguments:
+      - '@App\Database\PDOProvider'
