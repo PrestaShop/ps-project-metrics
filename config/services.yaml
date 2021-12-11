@@ -23,4 +23,12 @@ services:
 
   App\Helper\StatsService:
     arguments:
-      - '@App\Database\PDOProvider'
+      - '@PDO'
+
+  PDO:
+    class: PDO
+    factory: [ '@App\Database\PDOProvider', 'getPDO' ]
+
+  App\Database\DataFixtures\ReviewStatsFixtures:
+    tags:
+      - 'doctrine.fixture.orm'

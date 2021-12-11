@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace App\Helper;
 
-use App\Database\PDOProvider;
+use PDO;
 
 class StatsService
 {
     /**
-     * @var PDOProvider
+     * @var PDO
      */
-    private $pdoProvider;
+    private $pdo;
 
     /**
-     * @param PDOProvider $provider
+     * @param PDO $pdo
      */
-    public function __construct(PDOProvider $provider)
+    public function __construct(PDO $pdo)
     {
-        $this->pdoProvider = $provider;
+        $this->pdo = $pdo;
     }
 
     /**
@@ -28,10 +28,8 @@ class StatsService
      */
     public function getTeamStatsGroupedByLogin(int $recordsNumber): array
     {
-        $pdo = $this->pdoProvider->getPDO();
-
         $sql = 'SELECT login, day, total FROM reviews ORDER BY day DESC LIMIT ' . $recordsNumber;
-        $result = $pdo->query($sql)->fetchAll();
+        $result = $this->pdo->query($sql)->fetchAll();
 
         $days = [];
         $groupedByLogin = TeamHelper::getTeam(true);
@@ -67,10 +65,8 @@ class StatsService
      */
     public function getTeamStatsGroupedByDay(int $recordsNumber, int $skipRecordsNumber): array
     {
-        $pdo = $this->pdoProvider->getPDO();
-
         $sql = 'SELECT login, day, total FROM reviews ORDER BY day DESC LIMIT ' . $recordsNumber . ' OFFSET ' . $skipRecordsNumber;
-        $result = $pdo->query($sql)->fetchAll();
+        $result = $this->pdo->query($sql)->fetchAll();
 
         $groupedByDay = [];
 
@@ -100,11 +96,9 @@ class StatsService
      */
     public function getDeveloperStats(string $login): array
     {
-        $pdo = $this->pdoProvider->getPDO();
-
         $sql = sprintf(
             "SELECT day, PR, total FROM reviews WHERE login = '%s' ORDER BY day DESC", $login);;
-        $result = $pdo->query($sql)->fetchAll();
+        $result = $this->pdo->query($sql)->fetchAll();
 
         $cleanResult = [];
         foreach ($result as $item) {
