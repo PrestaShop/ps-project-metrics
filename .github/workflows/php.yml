@@ -1,5 +1,19 @@
 name: PHP tests
 on: [push, pull_request]
+
+env:
+  fail-fast: true
+  PHPUNIT_FLAGS: "-v"
+  SYMFONY_DEPRECATIONS_HELPER: 40
+  APP_ENV: test
+  APP_SECRET: abcdtehdlsfjdlsjsldjdldl
+  DATABASE_URL: sqlite:///%kernel.cache_dir%/test.db
+  APP_DB_HOST: 127.0.0.1
+  APP_DB_TABLE: review-stats
+  APP_DB_USER:
+  APP_DB_PASSWORD:
+  APP_GH_TOKEN: ghp_xabc
+
 jobs:
   build:
     strategy:
@@ -16,6 +30,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - run: composer install --dev
+      - run: composer install
       - run: bash -c '! (find . -name "*.php" ! -path "./vendor/*" -print0 | xargs -0 -n1 -P4 php -l | grep "Parse error")'
       - run: vendor/bin/phpunit -c phpunit.xml
