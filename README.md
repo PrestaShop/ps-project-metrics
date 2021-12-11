@@ -1,6 +1,8 @@
 # fruitdelapassion application
 
-Symfony 5 application that collects review statistics collected.
+[![PHP tests](https://github.com/matks/fruitdelapassion/actions/workflows/php.yml/badge.svg)](https://github.com/matks/fruitdelapassion/actions/workflows/php.yml)
+
+Symfony 5 application that collects and displays GitHub pull request review statistics.
 
 ## Install
 
@@ -13,11 +15,13 @@ You need
 - a MySQL database
 - a GitHub token with public access
 
-You need to provide 7 parameters using a `.env` file or environment variables.
+You need to provide 8 parameters using a `.env.local` file or environment variables.
 
 ```
 APP_ENV=dev
 APP_SECRET=...
+
+DATABASE_URL=...
 
 APP_DB_HOST=127.0.0.1
 APP_DB_TABLE=reviewstats
@@ -53,5 +57,7 @@ php bin/console matks:record --dry-run=true
 Run tests using phpunit
 
 ```
-vendor/bin/phpunit
+vendor/bin/phpunit -c phpunit.xml
 ```
+
+Some tests do load fixtures powered by a sqlite driver
