@@ -1,6 +1,8 @@
 # fruitdelapassion application
 
-[![PHP tests](https://github.com/matks/fruitdelapassion/actions/workflows/php.yml/badge.svg)](https://github.com/matks/fruitdelapassion/actions/workflows/php.yml)
+[![PHPUnit tests](https://github.com/matks/fruitdelapassion/actions/workflows/phpunit.yml/badge.svg)](https://github.com/matks/fruitdelapassion/actions/workflows/phpunit.yml)
+[![PHPStan](https://github.com/matks/fruitdelapassion/actions/workflows/phpstan.yml/badge.svg)](https://github.com/matks/fruitdelapassion/actions/workflows/phpstan.yml)
+
 
 Symfony 5 application that collects and displays GitHub pull request review statistics.
 
