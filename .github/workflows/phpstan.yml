@@ -20,7 +20,7 @@ jobs:
       matrix:
         php-versions: ['7.4', '8.0', '8.1']
     runs-on: ubuntu-latest
-    name: PHPUnit
+    name: PHPStan
     steps:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
