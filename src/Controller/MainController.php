@@ -35,7 +35,7 @@ class MainController extends AbstractController
 
         $lastSevenAndDays = $this->statisticsService->getTeamStatsGroupedByLogin($teamSize * $sevenDays, 0);
 
-        $lastThirtyDays = $this->statisticsService->getTeamStatsGroupedByDay($teamSize * $twentyThreeDays, 0);//$teamSize * $sevenDays);
+        $lastThirtyDays = $this->statisticsService->getTeamStatsGroupedByDay($teamSize * $twentyThreeDays, $teamSize * $sevenDays);
 
         return $this->render(
             'main.html.twig',
