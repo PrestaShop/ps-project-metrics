@@ -1,4 +1,4 @@
-name: PHP tests
+name: PHPUnit tests
 on: [push, pull_request]
 
 env:
@@ -26,7 +26,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           fetch-depth: 0
 

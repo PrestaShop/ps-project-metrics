@@ -23,12 +23,13 @@ class StatsService
 
     /**
      * @param int $recordsNumber
+     * @param int $skipRecordsNumber
      *
      * @return array
      */
-    public function getTeamStatsGroupedByLogin(int $recordsNumber): array
+    public function getTeamStatsGroupedByLogin(int $recordsNumber, int $skipRecordsNumber): array
     {
-        $sql = 'SELECT login, day, total FROM reviews ORDER BY day DESC LIMIT ' . $recordsNumber;
+        $sql = 'SELECT login, day, total FROM reviews ORDER BY day DESC LIMIT ' . $recordsNumber . ' OFFSET ' . $skipRecordsNumber;
         $result = $this->pdo->query($sql)->fetchAll();
 
         $days = [];

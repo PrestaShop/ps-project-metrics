@@ -1,0 +1,35 @@
+name: PHPStan
+on: [push, pull_request]
+
+env:
+  fail-fast: true
+  PHPUNIT_FLAGS: "-v"
+  SYMFONY_DEPRECATIONS_HELPER: 40
+  APP_ENV: test
+  APP_SECRET: abcdtehdlsfjdlsjsldjdldl
+  DATABASE_URL: sqlite:///%kernel.cache_dir%/test.db
+  APP_DB_HOST: 127.0.0.1
+  APP_DB_TABLE: review-stats
+  APP_DB_USER:
+  APP_DB_PASSWORD:
+  APP_GH_TOKEN: ghp_xabc
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        php-versions: ['7.4', '8.0', '8.1']
+    runs-on: ubuntu-latest
+    name: PHPUnit
+    steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - run: composer install
+      - name: Run phpstan
+          run: ./vendor/bin/phpstan analyse -c phpstan.neon
