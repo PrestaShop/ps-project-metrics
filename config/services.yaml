@@ -11,10 +11,9 @@ services:
 
   App\Command\RecordReviewsCommand:
     arguments:
-      - '@doctrine.orm.default_entity_manager'
-      - '%env(resolve:APP_GH_TOKEN)%'
+      - '@App\Helper\RecordService'
 
-  App\Database\PDOProvider:
+  App\Database\MySQLPDOProvider:
     arguments:
       - '%env(resolve:APP_DB_HOST)%'
       - '%env(resolve:APP_DB_TABLE)%'
@@ -25,9 +24,14 @@ services:
     arguments:
       - '@PDO'
 
+  App\Helper\RecordService:
+    arguments:
+      - '%env(resolve:APP_GH_TOKEN)%'
+      - '@doctrine.orm.default_entity_manager'
+
   PDO:
     class: PDO
-    factory: [ '@App\Database\PDOProvider', 'getPDO' ]
+    factory: [ '@App\Database\MySQLPDOProvider', 'getPDO' ]
 
   App\Database\DataFixtures\ReviewStatsFixtures:
     tags:

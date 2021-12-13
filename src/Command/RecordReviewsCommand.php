@@ -6,6 +6,7 @@ namespace App\Command;
 
 use App\Database\Entity\ReviewStat;
 use App\Helper\DayComputer;
+use App\Helper\RecordService;
 use App\Helper\TeamHelper;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Command\Command;
@@ -17,26 +18,19 @@ use DateTime;
 class RecordReviewsCommand extends Command
 {
     /**
-     * @var EntityManager
+     * @var RecordService
      */
-    private $entityManager;
-
-    /**
-     * @var string
-     */
-    private $githubToken;
+    private $recordService;
 
     /** @var string */
     protected static $defaultName = 'matks:record';
 
     /**
-     * @param EntityManager $entityManager
-     * @param string $githubToken
+     * @param RecordService $recordService
      */
-    public function __construct(EntityManager $entityManager, string $githubToken)
+    public function __construct(RecordService $recordService)
     {
-        $this->entityManager = $entityManager;
-        $this->githubToken = $githubToken;
+        $this->recordService = $recordService;
         parent::__construct();
     }
 
@@ -59,128 +53,23 @@ class RecordReviewsCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $isDryRun = $input->getOption('dry-run');
+        $dryRunOption = $input->getOption('dry-run');
+        $isDryRun = ('false' !== $dryRunOption);
 
         $day = new DateTime();
-        $previousWorkedDay = (DayComputer::getPreviousWorkedDayFromDateTime($day))->format('Y-m-d');
-        $output->writeln(sprintf('Record reviews for %s', $previousWorkedDay));
+        $previousWorkedDay = DayComputer::getPreviousWorkedDayFromDateTime($day);
+        $output->writeln(sprintf(
+            'Record reviews for %s (dry-run: %s)',
+            $previousWorkedDay->format('Y-m-d'),
+            ($isDryRun ? '<info>true</info>' : '<error>false</error>')
+        ));
 
-        $team = TeamHelper::getTeam();
+        $recordLogs = $this->recordService->recordReviewsForDay($previousWorkedDay, $isDryRun);
 
-        foreach ($team as $login) {
-            $dataFromAPI = json_decode(
-                $this->getReviewsByDay(
-                    $this->githubToken,
-                    $login,
-                    $previousWorkedDay . "T00:00:00",
-                    $previousWorkedDay . "T23:59:59"
-                ),
-                true
-            );
-
-            $PRurls = $this->extractPRUrls($dataFromAPI);
-
-            if ($isDryRun) {
-                $output->writeln(sprintf(
-                    '%s reviewed %d reviews on %s',
-                    $login,
-                    count($PRurls),
-                    $previousWorkedDay
-                ));
-            } else {
-                $this->insertReview($login, $PRurls, $previousWorkedDay);
-            }
+        foreach ($recordLogs as $log) {
+            $output->writeln($log);
         }
-
-        $this->entityManager->flush();
 
         return 0;
-    }
-
-    /**
-     * @param PDO $pdo
-     * @param string $login
-     * @param array $PRs
-     * @param string $day
-     */
-    private function insertReview(string $login, array $PRs, string $day)
-    {
-        $reviewStatRecord = new ReviewStat(
-            $login,
-            '"' . implode('";"', $PRs) . '"',
-            new DateTime($day),
-            count($PRs)
-        );
-
-        $this->entityManager->persist($reviewStatRecord);
-    }
-
-    /**
-     * @param string $token
-     * @param string $login
-     * @param string $from
-     * @param string $to
-     *
-     * @return bool|string
-     *
-     * @see https://docs.github.com/en/graphql/overview/explorer
-     */
-    private function getReviewsByDay(string $token, string $login, string $from, string $to)
-    {
-        $query = sprintf('
-		{
-		  user(login: "%s") {
-		    contributionsCollection(from: "%s", to: "%s") {
-		      pullRequestReviewContributions(first: 100) {
-		        edges {
-		          node {
-		            occurredAt
-		            pullRequest {
-		              url
-		            }
-		          }
-		        }
-		      }
-		    }
-		  }
-		}
-		', $login, $from, $to);
-        $json = json_encode(['query' => $query, 'variables' => []]);
-
-        $chObj = curl_init();
-        curl_setopt($chObj, CURLOPT_URL, 'https://api.github.com/graphql');
-        curl_setopt($chObj, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($chObj, CURLOPT_CUSTOMREQUEST, 'POST');
-        curl_setopt($chObj, CURLOPT_VERBOSE, false);
-        curl_setopt($chObj, CURLOPT_POSTFIELDS, $json);
-        curl_setopt($chObj, CURLOPT_HTTPHEADER,
-            array(
-                'User-Agent: PHP Script',
-                'Content-Type: application/json;charset=utf-8',
-                'Authorization: bearer ' . $token
-            )
-        );
-
-        return curl_exec($chObj);
-    }
-
-    /**
-     * @param array $dataFromAPI
-     *
-     * @return array
-     */
-    protected function extractPRUrls(array $dataFromAPI): array
-    {
-        $edges = reset($dataFromAPI['data']['user']['contributionsCollection']);
-        $edge = reset($edges);
-
-        $urls = [];
-        foreach ($edge as $dataBag) {
-            $PR = $dataBag['node']['pullRequest'];
-            $url = $PR['url'];
-            $urls[] = $url;
-        }
-
-        return $urls;
     }
 }

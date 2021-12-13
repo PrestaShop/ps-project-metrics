@@ -6,7 +6,7 @@ namespace App\Database;
 
 use PDO;
 
-class PDOProvider
+class MySQLPDOProvider
 {
     /** @var string */
     private $host;
