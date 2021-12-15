@@ -5,3 +5,7 @@ app_main:
 app_view_developer:
     path: /developer/{login}
     controller: App\Controller\ReviewStatsHomeController::viewDeveloper
+
+app_view_prs_waiting_stats:
+    path: /prs_waiting_stats
+    controller: App\Controller\PRsWaitingStatsController::viewStats

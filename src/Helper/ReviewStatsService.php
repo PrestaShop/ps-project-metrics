@@ -81,7 +81,7 @@ class ReviewStatsService
         }
 
         foreach ($groupedByDay as $day => $group) {
-            $groupedByDay[$day] = $this->reorderByTeamOrder($group);
+            $groupedByDay[$day] = TeamHelper::reorderByTeamOrder($group);
         }
 
         return [
@@ -171,21 +171,5 @@ class ReviewStatsService
         }
 
         return $html;
-    }
-
-    /**
-     * @param array $groupedByLogin
-     *
-     * @return array
-     */
-    private function reorderByTeamOrder(array $groupedByLogin): array
-    {
-        $team = TeamHelper::getTeam(true);
-
-        foreach ($groupedByLogin as $login => $group) {
-            $team[$login] = $group;
-        }
-
-        return $team;
     }
 }

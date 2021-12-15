@@ -30,4 +30,20 @@ class TeamHelper
 
         return array_keys($team);
     }
+
+    /**
+     * @param array $groupedByLogin
+     *
+     * @return array
+     */
+    public static function reorderByTeamOrder(array $groupedByLogin): array
+    {
+        $team = self::getTeam(true);
+
+        foreach ($groupedByLogin as $login => $group) {
+            $team[$login] = $group;
+        }
+
+        return $team;
+    }
 }

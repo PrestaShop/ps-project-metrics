@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+  <div class="page-header">
+    <img src="/img/fruitpassion.png" width="50px" height="50px" class="sticker-image"/>
+    <h1>Pull Requests waiting statistics</h1>
+  </div>
+  <div>
+    <h2>Last thirty days</h2>
+  </div>
+
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      {% for type in prTypes %}
+        <th scope="col">{{ type }}</th>
+      {% endfor %}
+    </tr>
+    </thead>
+    <tbody>
+    {% for day, data in stats %}
+      <tr>
+        <th scope="row">
+          {{ day }}
+        </th>
+        {% for total in data %}
+          <td>
+            {{ total }}
+          </td>
+        {% endfor %}
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+{% endblock %}

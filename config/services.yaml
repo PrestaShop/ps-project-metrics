@@ -9,6 +9,10 @@ services:
     arguments:
       - '@App\Helper\ReviewStatsService'
 
+  App\Controller\PRsWaitingStatsController:
+    arguments:
+      - '@App\Helper\PRsWaitingStatsService'
+
   App\Command\RecordReviewsCommand:
     arguments:
       - '@App\Helper\ReviewRecordService'
@@ -25,6 +29,10 @@ services:
       - '%env(resolve:APP_DB_PASSWORD)%'
 
   App\Helper\ReviewStatsService:
+    arguments:
+      - '@PDO'
+
+  App\Helper\PRsWaitingStatsService:
     arguments:
       - '@PDO'
 
