@@ -11,7 +11,11 @@ services:
 
   App\Command\RecordReviewsCommand:
     arguments:
-      - '@App\Helper\RecordService'
+      - '@App\Helper\ReviewRecordService'
+
+  App\Command\RecordPRsWaitingTotalCommand:
+    arguments:
+      - '@App\Helper\PRsWaitingRecordService'
 
   App\Database\MySQLPDOProvider:
     arguments:
@@ -24,7 +28,12 @@ services:
     arguments:
       - '@PDO'
 
-  App\Helper\RecordService:
+  App\Helper\ReviewRecordService:
+    arguments:
+      - '%env(resolve:APP_GH_TOKEN)%'
+      - '@doctrine.orm.default_entity_manager'
+
+  App\Helper\PRsWaitingRecordService:
     arguments:
       - '%env(resolve:APP_GH_TOKEN)%'
       - '@doctrine.orm.default_entity_manager'

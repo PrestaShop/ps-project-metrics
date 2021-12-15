@@ -6,7 +6,7 @@ namespace App\Command;
 
 use App\Database\Entity\ReviewStat;
 use App\Helper\DayComputer;
-use App\Helper\ReviewRecordService;
+use App\Helper\PRsWaitingRecordService;
 use App\Helper\TeamHelper;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Command\Command;
@@ -15,20 +15,20 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use DateTime;
 
-class RecordReviewsCommand extends Command
+class RecordPRsWaitingTotalCommand extends Command
 {
     /**
-     * @var ReviewRecordService
+     * @var PRsWaitingRecordService
      */
     private $recordService;
 
     /** @var string */
-    protected static $defaultName = 'matks:review-stats:record';
+    protected static $defaultName = 'matks:prs-waiting-stats:record';
 
     /**
-     * @param ReviewRecordService $recordService
+     * @param PRsWaitingRecordService $recordService
      */
-    public function __construct(ReviewRecordService $recordService)
+    public function __construct(PRsWaitingRecordService $recordService)
     {
         $this->recordService = $recordService;
         parent::__construct();
@@ -57,14 +57,13 @@ class RecordReviewsCommand extends Command
         $isDryRun = ('false' !== $dryRunOption);
 
         $day = new DateTime();
-        $previousWorkedDay = DayComputer::getPreviousWorkedDayFromDateTime($day);
         $output->writeln(sprintf(
-            'Record reviews for %s (dry-run: %s)',
-            $previousWorkedDay->format('Y-m-d'),
+            'Record pull requests waiting for %s (dry-run: %s)',
+            $day->format('Y-m-d'),
             ($isDryRun ? '<info>true</info>' : '<error>false</error>')
         ));
 
-        $recordLogs = $this->recordService->recordReviewsForDay($previousWorkedDay, $isDryRun);
+        $recordLogs = $this->recordService->recordAllPRsWaiting($isDryRun);
 
         foreach ($recordLogs as $log) {
             $output->writeln($log);

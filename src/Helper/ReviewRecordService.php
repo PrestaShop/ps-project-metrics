@@ -8,7 +8,7 @@ use App\Database\Entity\ReviewStat;
 use DateTime;
 use Doctrine\ORM\EntityManager;
 
-class RecordService
+class ReviewRecordService
 {
     /**
      * @var string
