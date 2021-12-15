@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Tests\Helper;
 
-use App\Helper\StatsService;
+use App\Helper\ReviewStatsService;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
 use PDO;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class StatsServiceTest extends KernelTestCase
+class ReviewStatsServiceTest extends KernelTestCase
 {
     /** @var AbstractDatabaseTool */
     protected $databaseTool;
@@ -30,7 +30,7 @@ class StatsServiceTest extends KernelTestCase
     {
         $this->databaseTool->loadFixtures(['App\Database\DataFixtures\ReviewStatsFixtures']);
 
-        $statsService = new StatsService($this->getPDO());
+        $statsService = new ReviewStatsService($this->getPDO());
 
         $stats = $statsService->getDeveloperStats('matks');
 

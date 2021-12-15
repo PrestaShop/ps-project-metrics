@@ -6,12 +6,12 @@ namespace App\Helper;
 
 use PDO;
 
-class StatsService
+class ReviewStatsService
 {
     /**
      * @var PDO
      */
-    private $pdo;
+    private PDO $pdo;
 
     /**
      * @param PDO $pdo

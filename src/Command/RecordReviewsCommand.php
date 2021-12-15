@@ -7,8 +7,6 @@ namespace App\Command;
 use App\Database\Entity\ReviewStat;
 use App\Helper\DayComputer;
 use App\Helper\ReviewRecordService;
-use App\Helper\TeamHelper;
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -20,7 +18,7 @@ class RecordReviewsCommand extends Command
     /**
      * @var ReviewRecordService
      */
-    private $recordService;
+    private ReviewRecordService $recordService;
 
     /** @var string */
     protected static $defaultName = 'matks:review-stats:record';

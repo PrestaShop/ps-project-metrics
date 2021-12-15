@@ -5,9 +5,9 @@ services:
     autowire: true      # Automatically injects dependencies in your services.
     autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
-  App\Controller\MainController:
+  App\Controller\ReviewStatsHomeController:
     arguments:
-      - '@App\Helper\StatsService'
+      - '@App\Helper\ReviewStatsService'
 
   App\Command\RecordReviewsCommand:
     arguments:
@@ -24,7 +24,7 @@ services:
       - '%env(resolve:APP_DB_USER)%'
       - '%env(resolve:APP_DB_PASSWORD)%'
 
-  App\Helper\StatsService:
+  App\Helper\ReviewStatsService:
     arguments:
       - '@PDO'
 

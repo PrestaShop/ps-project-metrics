@@ -1,7 +1,7 @@
 app_main:
     path: /
-    controller: App\Controller\MainController::home
+    controller: App\Controller\ReviewStatsHomeController::home
 
 app_view_developer:
     path: /developer/{login}
-    controller: App\Controller\MainController::viewDeveloper
+    controller: App\Controller\ReviewStatsHomeController::viewDeveloper

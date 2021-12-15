@@ -9,13 +9,13 @@ use PDO;
 class MySQLPDOProvider
 {
     /** @var string */
-    private $host;
+    private string $host;
     /** @var string */
-    private $db;
+    private string $db;
     /** @var string */
-    private $user;
+    private string $user;
     /** @var string */
-    private $pass;
+    private string $pass;
 
     /**
      * @param string $host

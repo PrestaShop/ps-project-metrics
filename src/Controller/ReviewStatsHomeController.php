@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Helper\StatsService;
+use App\Helper\ReviewStatsService;
 use App\Helper\TeamHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
-class MainController extends AbstractController
+class ReviewStatsHomeController extends AbstractController
 {
     /**
-     * @var StatsService
+     * @var ReviewStatsService
      */
-    private $statisticsService;
+    private ReviewStatsService $statisticsService;
 
     /**
-     * @param StatsService $statisticsService
+     * @param ReviewStatsService $statisticsService
      */
-    public function __construct(StatsService $statisticsService)
+    public function __construct(ReviewStatsService $statisticsService)
     {
         $this->statisticsService = $statisticsService;
     }

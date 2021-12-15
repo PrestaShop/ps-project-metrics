@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Database\Entity\ReviewStat;
-use App\Helper\DayComputer;
 use App\Helper\PRsWaitingRecordService;
-use App\Helper\TeamHelper;
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -20,7 +16,7 @@ class RecordPRsWaitingTotalCommand extends Command
     /**
      * @var PRsWaitingRecordService
      */
-    private $recordService;
+    private PRsWaitingRecordService $recordService;
 
     /** @var string */
     protected static $defaultName = 'matks:prs-waiting-stats:record';
