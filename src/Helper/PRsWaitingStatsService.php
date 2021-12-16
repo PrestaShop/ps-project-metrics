@@ -38,10 +38,9 @@ class PRsWaitingStatsService
                 $groupedByDay,
                 $item['day'],
                 $item['name'],
-                $item['total']
+                (int) $item['total']
             );
         }
-
 
         foreach ($groupedByDay as $day => $group) {
             $groupedByDay[$day] = PRStatsHelper::reorderByPRTypeOrder($group);

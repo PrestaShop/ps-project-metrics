@@ -53,3 +53,7 @@ services:
   App\Database\DataFixtures\ReviewStatsFixtures:
     tags:
       - 'doctrine.fixture.orm'
+
+  App\Database\DataFixtures\PRWaitingStatsFixtures:
+    tags:
+      - 'doctrine.fixture.orm'

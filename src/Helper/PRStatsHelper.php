@@ -45,12 +45,12 @@ class PRStatsHelper
     /**
      * @param bool $asKeys
      *
-     * @return string[]|array[]
+     * @return string[]|null[]
      */
     public static function getTypes(bool $asKeys = false): array
     {
         if ($asKeys) {
-            return self::getTypesWithLabels();
+            return array_map(function () { return null;}, self::getTypesWithLabels());
         }
 
         return array_keys(self::getTypesWithLabels());
@@ -63,7 +63,7 @@ class PRStatsHelper
      */
     public static function reorderByPRTypeOrder(array $groupedByName): array
     {
-        $types = array_flip(self::getTypes());
+        $types = self::getTypes(true);
 
         foreach ($groupedByName as $name => $group) {
             $types[$name] = $group;
