@@ -38,13 +38,11 @@ class PRsWaitingRecordService
      */
     public function recordAllPRsWaiting(bool $isDryRun): array
     {
-        $baseUrl = 'https://api.github.com/search/issues?per_page=100';
-
         $logs = [];
         $map = PRStatsHelper::getTypesWithUrls();
 
         foreach ($map as $type => $url) {
-            $total = $this->getCount($baseUrl . '&' . $url);
+            $total = $this->getCount($url);
             $statRecord = new PRwaitingStat($type, new DateTime(), $total);
             $logs[] = sprintf('Recorded %d PRs %s', $total, $type);
             if (!$isDryRun) {

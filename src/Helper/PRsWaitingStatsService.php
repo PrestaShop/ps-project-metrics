@@ -49,6 +49,7 @@ class PRsWaitingStatsService
 
         return [
             'prTypes' => PRStatsHelper::getTypesWithLabels(),
+            'prUrls' => PRStatsHelper::getTypesWithUrls(),
             'stats' => $groupedByDay,
         ];
     }

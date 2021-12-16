@@ -13,7 +13,9 @@ class PRStatsHelper
      */
     public static function getTypesWithUrls(): array
     {
-        return [
+        $baseUrl = 'https://api.github.com/search/issues?per_page=100';
+
+        $mapping = [
             PRWaitingStat::PR_WAITING_FOR_REVIEW => 'q=org%3APrestaShop+is%3Apr+is%3Aopen+review%3Arequired+archived%3Afalse',
             PRWaitingStat::PR_WAITING_FOR_QA => 'q=org%3APrestaShop+is%3Apr+is%3Aopen+label%3A"Waiting+for+QA"+archived%3Afalse',
             PRWaitingStat::PR_WAITING_FOR_PM => 'q=org%3APrestaShop+is%3Apr+is%3Aopen+label%3A"Waiting+for+PM"+archived%3Afalse',
@@ -21,6 +23,8 @@ class PRStatsHelper
             PRWaitingStat::PR_WAITING_FOR_DEV_AND_QA => 'q=org%3APrestaShop+is%3Apr+is%3Aopen+archived%3Afalse+sort%3Aupdated-asc+label%3A"Waiting+for+dev"+label%3A"Waiting+for+QA"',
             PRWaitingStat::PR_Open => 'q=org%3APrestaShop+is%3Apr+is%3Aopen+archived%3Afalse+sort%3Aupdated-asc',
         ];
+
+        return array_map(function ($parameters) use ($baseUrl) { return $baseUrl . '&' . $parameters; }, $mapping);
     }
 
     /**

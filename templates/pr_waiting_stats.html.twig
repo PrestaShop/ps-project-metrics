@@ -13,8 +13,10 @@
     <thead>
     <tr>
       <th scope="col">#</th>
-      {% for type in prTypes %}
-        <th scope="col">{{ type }}</th>
+      {% for key, type in prTypes %}
+        <th scope="col">
+          <a href="{{ prUrls[key] }}">{{ type }}</a>
+        </th>
       {% endfor %}
     </tr>
     </thead>
