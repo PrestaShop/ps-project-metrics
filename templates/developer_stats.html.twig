@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block page_header %}
+  <div class="page-header">
+    <img src="/img/fruitpassion.png" width="50px" height="50px" class="sticker-image"/>
+    <h1>{{ login }} review statistics</h1>
+  </div>
+{% endblock %}
+
+{% block page_content %}
+  <div class="container">
+    <div>
+      <p>
+        You can see the same data on your personal GitHub page:
+        <a href="https://github.com/{{ login }}">https://github.com/{{ login }}</a>
+      </p>
+    </div>
+
+    <dl class="dl-horizontal">
+      {% for data in stats %}
+        <dt>On {{ data['day'] }}</dt>
+        <dd>
+          reviewed {{ data['total'] }} pull requests: {{ data['PR'] | raw }}
+        </dd>
+
+      {% endfor %}
+    </dl>
+  </div>
+
+{% endblock %}
+
+{% block footer %}
+  <footer>
+    <div class="container">
+      <p>
+        Data fetched from the <a href="https://docs.github.com/en/graphql">GitHub GraphQL API</a>.
+        <br/>You can see the same data on your personal GitHub page (see <a
+            href="https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/managing-contribution-graphs-on-your-profile/viewing-contributions-on-your-profile">GitHub
+          doc</a>) or explore it using the API explorer:
+        <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">https://docs.github.com/en/graphql/overview/explorer</a>
+      </p>
+    </div>
+  </footer>
+{% endblock %}

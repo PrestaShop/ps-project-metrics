@@ -1,11 +1,13 @@
 {% extends 'base.html.twig' %}
-{% block body %}
 
-  <div class="page-header">
-    <img src="/img/fruitpassion.png" width="50px" height="50px" class="sticker-image"/>
-    <h1>Review statistics</h1>
-  </div>
+{% block page_header %}
+<div class="page-header">
+  <img src="/img/fruitpassion.png" width="50px" height="50px" class="sticker-image"/>
+  <h1>Dashboard - Review statistics</h1>
+</div>
+{% endblock %}
 
+{% block page_info %}
   <div class="jumbotron">
     <h2>About this dashboard</h2>
     <div>
@@ -21,7 +23,9 @@
       <a href="https://github.com/matks/fruitdelapassion">GitHub repository</a>
     </div>
   </div>
+{% endblock %}
 
+{% block page_content %}
   <div>
     <h2>Last seven days</h2>
   </div>
@@ -116,5 +120,18 @@
     {% endfor %}
     </tbody>
   </table>
+{% endblock %}
 
+{% block footer %}
+  <footer>
+    <div class="container">
+      <p>
+        Data fetched from the <a href="https://docs.github.com/en/graphql">GitHub GraphQL API</a>.
+        <br/>You can see the same data on your personal GitHub page (see <a
+            href="https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/managing-contribution-graphs-on-your-profile/viewing-contributions-on-your-profile">GitHub
+          doc</a>) or explore it using the API explorer:
+        <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">https://docs.github.com/en/graphql/overview/explorer</a>
+      </p>
+    </div>
+  </footer>
 {% endblock %}

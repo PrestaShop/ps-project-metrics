@@ -38,7 +38,7 @@ class ReviewStatsHomeController extends AbstractController
         $lastThirtyDays = $this->statisticsService->getTeamStatsGroupedByDay($teamSize * $twentyThreeDays, $teamSize * $sevenDays);
 
         return $this->render(
-            'main.html.twig',
+            'review_stats.html.twig',
             [
                 'lastSeven' => $lastSevenAndDays,
                 'lastThirty' => $lastThirtyDays,
@@ -59,7 +59,7 @@ class ReviewStatsHomeController extends AbstractController
 
         $developerStats = $this->statisticsService->getDeveloperStats($login);
 
-        return $this->render('developer.html.twig',
+        return $this->render('developer_stats.html.twig',
             ['stats' => $developerStats, 'login' => $login]
         );
     }
