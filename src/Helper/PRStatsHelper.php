@@ -9,7 +9,7 @@ use App\Database\Entity\PRWaitingStat;
 class PRStatsHelper
 {
     /**
-     * @param bool @outputApiUrl
+     * @param bool $outputApiUrl
      *
      * @return string[]
      */
