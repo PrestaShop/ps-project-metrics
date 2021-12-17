@@ -9,11 +9,17 @@ use App\Database\Entity\PRWaitingStat;
 class PRStatsHelper
 {
     /**
+     * @param bool @outputApiUrl
+     *
      * @return string[]
      */
-    public static function getTypesWithUrls(): array
+    public static function getTypesWithUrls(bool $outputApiUrl = true): array
     {
-        $baseUrl = 'https://api.github.com/search/issues?per_page=100';
+        if ($outputApiUrl) {
+            $baseUrl = 'https://api.github.com/search/issues?per_page=100';
+        } else {
+            $baseUrl = 'https://github.com/pulls?';
+        }
 
         $mapping = [
             PRWaitingStat::PR_WAITING_FOR_REVIEW => 'q=org%3APrestaShop+is%3Apr+is%3Aopen+review%3Arequired+archived%3Afalse',
