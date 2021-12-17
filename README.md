@@ -4,7 +4,9 @@
 [![PHPStan](https://github.com/matks/fruitdelapassion/actions/workflows/phpstan.yml/badge.svg)](https://github.com/matks/fruitdelapassion/actions/workflows/phpstan.yml)
 
 
-Symfony 5 application that collects and displays GitHub pull request review statistics.
+Symfony 5 application that collects and displays
+- GitHub pull request review statistics
+- GitHub waiting pull request statistics
 
 ## Install
 
@@ -34,24 +36,32 @@ APP_GH_TOKEN=...
 
 ## Usage
 
+### Browse statistics
+
 Browse `/` using a webserver to see the dashboard.
 
-Example:
+If you configure a webserver, do use `public` as root directory.
+
+Example with Symfony built-in server:
 
 ```
 symfony server:start
 ```
 
-Run command to collect data of previous worked day
+### Collect statistics
 
 ```
-php bin/console matks:record
+# To collect pull request statistics
+php bin/console matks:prs-waiting-stats:record
+# To collect pull request review statistics
+php bin/console matks:review-stats:record
 ```
 
-The command can be run as dry-run
+Each command can be triggered as dry-run (does not persist data) or not. Default is dry-run enabled, so in order to persist the data you need to add `--dry-run=false`:
 
 ```
-php bin/console matks:record --dry-run=true
+php bin/console matks:prs-waiting-stats:record --dry-run=false
+php bin/console matks:review-stats:record --dry-run=false
 ```
 
 ## Test
@@ -63,3 +73,8 @@ vendor/bin/phpunit -c phpunit.xml
 ```
 
 Some tests do load fixtures powered by a sqlite driver
+
+Run static analysis using phpstan
+```
+vendor/bin/phpstan analyse -c phpstan.neon
+```
