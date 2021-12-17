@@ -50,6 +50,7 @@ class ReviewStatsService
         foreach ($groupedByLogin as $login => $group) {
             $groupedByLogin[$login] = array_reverse($group);
         }
+        $groupedByLogin = $this->computeAndInsertTotals($groupedByLogin);
 
         return [
             'days' => array_reverse($days),
@@ -171,5 +172,25 @@ class ReviewStatsService
         }
 
         return $html;
+    }
+
+    /**
+     * @param array<string, array<string, int>> $groupedByLogin
+     *
+     * @return array<string, array<string, int>>
+     */
+    private function computeAndInsertTotals(array $groupedByLogin): array
+    {
+        $copy = $groupedByLogin;
+
+        foreach ($groupedByLogin as $login => $dayStats) {
+            $sum = 0;
+            foreach ($dayStats as $dayStat) {
+                $sum += $dayStat;
+            }
+            $copy[$login]['total'] = $sum;
+        }
+
+        return $copy;
     }
 }
