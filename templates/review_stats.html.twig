@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block page_header %}
-<div class="page-header">
-  <img src="/img/fruitpassion.png" width="50px" height="50px" class="sticker-image"/>
-  <h1>Dashboard - Review statistics</h1>
-</div>
+  <div class="page-title">
+    <img src="/img/fruitpassion.png" width="50px" height="50px" class="sticker-image"/>
+    <h1>Dashboard - Review statistics</h1>
+  </div>
 {% endblock %}
 
 {% block page_info %}
@@ -30,12 +30,9 @@
     <h2>Last seven days</h2>
   </div>
 
-  <dl class="dl-horizontal">
-    <dt>Last seven days total</dt>
-    <dd>
-      {{ lastSeven.totalTeam }}
-    </dd>
-  </dl>
+  <div class="dl-horizontal">
+    Last seven days total: {{ lastSeven.totalTeam }}
+  </div>
 
   <table class="table">
     <thead>
@@ -56,11 +53,11 @@
         {% for total in data %}
           <td>
             {% if (total <= 2 ) %}
-            <span class="label label-danger">
+            <span class="badge bg-danger">
             {% elseif (total <= 4 ) %}
-            <span class="label label-warning">
+            <span class="badge bg-warning">
             {% elseif (total >= 20 ) %}
-            <span class="label label-success">
+            <span class="badge bg-success">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star"
                  viewBox="0 0 16 16">
               <path
@@ -77,7 +74,7 @@
     </tbody>
   </table>
 
-<div>
+  <div>
     <h2>Last thirty days</h2>
   </div>
 

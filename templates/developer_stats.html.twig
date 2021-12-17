@@ -1,31 +1,32 @@
 {% extends 'base.html.twig' %}
 
 {% block page_header %}
-  <div class="page-header">
+  <div class="page-title">
     <img src="/img/fruitpassion.png" width="50px" height="50px" class="sticker-image"/>
     <h1>{{ login }} review statistics</h1>
   </div>
 {% endblock %}
 
-{% block page_content %}
-  <div class="container">
-    <div>
-      <p>
-        You can see the same data on your personal GitHub page:
-        <a href="https://github.com/{{ login }}">https://github.com/{{ login }}</a>
-      </p>
-    </div>
-
-    <dl class="dl-horizontal">
-      {% for data in stats %}
-        <dt>On {{ data['day'] }}</dt>
-        <dd>
-          reviewed {{ data['total'] }} pull requests: {{ data['PR'] | raw }}
-        </dd>
-
-      {% endfor %}
-    </dl>
+{% block page_info %}
+<div class="jumbotron">
+  <h2>About this dashboard</h2>
+  <div>
+    You can see the same data on your personal GitHub page:
+    <a href="https://github.com/{{ login }}">https://github.com/{{ login }}</a>
   </div>
+</div>
+{% endblock %}
+
+{% block page_content %}
+  <dl class="row">
+    {% for data in stats %}
+      <dt class="col-sm-4">On {{ data['day'] }} reviewed {{ data['total'] }} pull requests:</dt>
+      <dd class="col-sm-8">
+           {{ data['PR'] | raw }}
+      </dd>
+
+    {% endfor %}
+  </dl>
 
 {% endblock %}
 
