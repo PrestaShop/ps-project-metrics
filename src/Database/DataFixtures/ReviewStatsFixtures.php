@@ -11,7 +11,10 @@ use Doctrine\Persistence\ObjectManager;
 
 class ReviewStatsFixtures extends Fixture
 {
-    public function load(ObjectManager $manager)
+    /**
+     * @param ObjectManager $manager
+     */
+    public function load(ObjectManager $manager): void
     {
         $manager->persist(new ReviewStat('matks', '"ABC"', new DateTime('2021-12-01'), 1));
         $manager->persist(new ReviewStat('matks', '"ABC","ABD"', new DateTime('2021-12-02'), 2));

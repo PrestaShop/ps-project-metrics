@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class TeamHelperTest extends TestCase
 {
-    public function testGetTeam()
+    public function testGetTeam(): void
     {
         $expected = [
             'PierreRambaud',
@@ -25,7 +25,7 @@ class TeamHelperTest extends TestCase
         $this->assertEquals($expected, TeamHelper::getTeam());
     }
 
-    public function testGetTeamAsKeys()
+    public function testGetTeamAsKeys(): void
     {
         $expected = [
             'PierreRambaud' => [],      # Pierre R.

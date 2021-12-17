@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class PRStatsHelperTest extends TestCase
 {
-    public function testGetTypesWithUrls()
+    public function testGetTypesWithUrls(): void
     {
         $this->assertEquals(
             'https://api.github.com/search/issues?per_page=100&q=org%3APrestaShop+is%3Apr+is%3Aopen+label%3A"Waiting+for+QA"+archived%3Afalse',
@@ -19,7 +19,7 @@ class PRStatsHelperTest extends TestCase
         );
     }
 
-    public function testGetTypesWithLabels()
+    public function testGetTypesWithLabels(): void
     {
         $this->assertEquals(
             'Waiting for QA',
@@ -27,7 +27,7 @@ class PRStatsHelperTest extends TestCase
         );
     }
 
-    public function testGetTypes()
+    public function testGetTypes(): void
     {
         $expected = [
             PRWaitingStat::PR_WAITING_FOR_REVIEW,

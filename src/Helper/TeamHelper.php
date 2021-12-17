@@ -9,7 +9,7 @@ class TeamHelper
     /**
      * @param bool $asKeys
      *
-     * @return string[]|array[]
+     * @return string[]|array<string, array<int, int>>
      */
     public static function getTeam(bool $asKeys = false): array
     {
@@ -32,9 +32,9 @@ class TeamHelper
     }
 
     /**
-     * @param array $groupedByLogin
+     * @param array<string, array<string, int>> $groupedByLogin
      *
-     * @return array
+     * @return array<string, array<string, int>>
      */
     public static function reorderByTeamOrder(array $groupedByLogin): array
     {

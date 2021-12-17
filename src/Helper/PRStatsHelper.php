@@ -63,9 +63,9 @@ class PRStatsHelper
     }
 
     /**
-     * @param array $groupedByName
+     * @param array<string, array<string, int>> $groupedByName
      *
-     * @return array
+     * @return array<string, array<string, int>>
      */
     public static function reorderByPRTypeOrder(array $groupedByName): array
     {

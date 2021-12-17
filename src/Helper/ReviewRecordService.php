@@ -34,7 +34,7 @@ class ReviewRecordService
      * @param DateTime $day
      * @param bool $dryRun
      *
-     * @return array
+     * @return string[]
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
@@ -77,12 +77,12 @@ class ReviewRecordService
 
     /**
      * @param string $login
-     * @param array $PRs
+     * @param string[] $PRs
      * @param string $date
      *
      * @throws \Doctrine\ORM\ORMException
      */
-    private function insertReview(string $login, array $PRs, string $date)
+    private function insertReview(string $login, array $PRs, string $date): void
     {
         $reviewStatRecord = new ReviewStat(
             $login,
@@ -100,11 +100,11 @@ class ReviewRecordService
      * @param string $from
      * @param string $to
      *
-     * @return bool|string
+     * @return string
      *
      * @see https://docs.github.com/en/graphql/overview/explorer
      */
-    private function getReviewsByDay(string $token, string $login, string $from, string $to)
+    private function getReviewsByDay(string $token, string $login, string $from, string $to): string
     {
         $query = sprintf('
 		{
@@ -144,9 +144,9 @@ class ReviewRecordService
     }
 
     /**
-     * @param array $dataFromAPI
+     * @param array<string, mixed> $dataFromAPI
      *
-     * @return array
+     * @return string[]
      */
     private function extractPRUrls(array $dataFromAPI): array
     {

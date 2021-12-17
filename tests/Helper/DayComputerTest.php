@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class DayComputerTest extends TestCase
 {
-    public function testGetPreviousWorkedDayFromWednesday()
+    public function testGetPreviousWorkedDayFromWednesday(): void
     {
         $dateTime = new DateTime('2021-12-08 05:00:00');
         $expectedPreviousDay = new DateTime('2021-12-07 05:00:00');

@@ -25,7 +25,7 @@ class ReviewStatsService
      * @param int $recordsNumber
      * @param int $skipRecordsNumber
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getTeamStatsGroupedByLogin(int $recordsNumber, int $skipRecordsNumber): array
     {
@@ -62,7 +62,7 @@ class ReviewStatsService
      * @param int $recordsNumber
      * @param int $skipRecordsNumber
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getTeamStatsGroupedByDay(int $recordsNumber, int $skipRecordsNumber): array
     {
@@ -93,7 +93,7 @@ class ReviewStatsService
     /**
      * @param string $login
      *
-     * @return array
+     * @return array<int, array<string, mixed>>
      */
     public function getDeveloperStats(string $login): array
     {
@@ -114,12 +114,12 @@ class ReviewStatsService
     }
 
     /**
-     * @param array $groupedByLogin
+     * @param array<string, array<string, int>> $groupedByLogin
      * @param string $login
      * @param string $day
      * @param int $total
      *
-     * @return array
+     * @return array<string, array<string, int>>
      */
     private function addOrInsert(array $groupedByLogin, string $login, string $day, int $total): array
     {

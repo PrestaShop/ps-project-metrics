@@ -24,7 +24,7 @@ class PRsWaitingStatsService
     /**
      * @param int $recordsNumber
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getTeamStatsGroupedByDay(int $recordsNumber): array
     {
@@ -54,12 +54,12 @@ class PRsWaitingStatsService
     }
 
     /**
-     * @param array $groupedByLogin
+     * @param array<string, array<string, int>> $groupedByLogin
      * @param string $login
      * @param string $day
      * @param int $total
      *
-     * @return array
+     * @return array<string, array<string, int>>
      */
     private function addOrInsert(array $groupedByLogin, string $login, string $day, int $total): array
     {
