@@ -40,4 +40,26 @@ class PRStatsHelperTest extends TestCase
 
         $this->assertEquals($expected, PRStatsHelper::getTypes());
     }
+
+    public function testReorderByPRTypeOrder(): void
+    {
+        $input = [
+            PRWaitingStat::PR_WAITING_FOR_QA => 10,
+            PRWaitingStat::PR_WAITING_FOR_REVIEW => 4,
+            PRWaitingStat::PR_WAITING_FOR_DEV_AND_QA => 28,
+            PRWaitingStat::PR_WAITING_FOR_PM => 0,
+            PRWaitingStat::PR_Open => 82,
+            PRWaitingStat::PR_WAITING_FOR_DEV => 17,
+        ];
+        $expected = [
+            PRWaitingStat::PR_WAITING_FOR_REVIEW => 4,
+            PRWaitingStat::PR_WAITING_FOR_QA => 10,
+            PRWaitingStat::PR_WAITING_FOR_PM => 0,
+            PRWaitingStat::PR_WAITING_FOR_DEV => 17,
+            PRWaitingStat::PR_WAITING_FOR_DEV_AND_QA => 28,
+            PRWaitingStat::PR_Open => 82,
+        ];
+
+        $this->assertEquals($expected, PRStatsHelper::reorderByPRTypeOrder($input));
+    }
 }

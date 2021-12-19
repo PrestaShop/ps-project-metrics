@@ -42,7 +42,7 @@ class ReviewStatsService
                 $groupedByLogin,
                 $item['login'],
                 $item['day'],
-                $item['total']
+                (int)$item['total']
             );
             $total += (int)$item['total'];
         }
@@ -77,7 +77,7 @@ class ReviewStatsService
                 $groupedByDay,
                 $item['day'],
                 $item['login'],
-                $item['total']
+                (int)$item['total']
             );
         }
 

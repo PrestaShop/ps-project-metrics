@@ -30,7 +30,9 @@ class PRStatsHelper
             PRWaitingStat::PR_Open => 'q=org%3APrestaShop+is%3Apr+is%3Aopen+archived%3Afalse+sort%3Aupdated-asc',
         ];
 
-        return array_map(function ($parameters) use ($baseUrl) { return $baseUrl . '&' . $parameters; }, $mapping);
+        return array_map(function ($parameters) use ($baseUrl) {
+            return $baseUrl . '&' . $parameters;
+        }, $mapping);
     }
 
     /**
@@ -56,7 +58,9 @@ class PRStatsHelper
     public static function getTypes(bool $asKeys = false): array
     {
         if ($asKeys) {
-            return array_map(function () { return null;}, self::getTypesWithLabels());
+            return array_map(function () {
+                return null;
+            }, self::getTypesWithLabels());
         }
 
         return array_keys(self::getTypesWithLabels());
@@ -69,12 +73,12 @@ class PRStatsHelper
      */
     public static function reorderByPRTypeOrder(array $groupedByName): array
     {
-        $types = self::getTypes(true);
+        $reordered = array_fill_keys(self::getTypes(), 0);
 
         foreach ($groupedByName as $name => $group) {
-            $types[$name] = $group;
+            $reordered[$name] = $group;
         }
 
-        return $types;
+        return $reordered;
     }
 }

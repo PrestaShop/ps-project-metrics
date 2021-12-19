@@ -38,12 +38,12 @@ class TeamHelper
      */
     public static function reorderByTeamOrder(array $groupedByLogin): array
     {
-        $team = self::getTeam(true);
+        $reordered = array_fill_keys(self::getTeam(), 0);
 
         foreach ($groupedByLogin as $login => $group) {
-            $team[$login] = $group;
+            $reordered[$login] = $group;
         }
 
-        return $team;
+        return $reordered;
     }
 }
