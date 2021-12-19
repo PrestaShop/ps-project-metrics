@@ -1,7 +1,7 @@
 {
   "name": "matks/fruitdelapassion",
   "type": "project",
-  "license": "proprietary",
+  "license": "MIT",
   "minimum-stability": "stable",
   "prefer-stable": true,
   "require": {

@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace App\Helper;
 
+/*
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 use App\Database\Entity\ReviewStat;
 use DateTime;
 use Doctrine\ORM\EntityManager;
