@@ -32,9 +32,9 @@ class TeamHelper
     }
 
     /**
-     * @param array<string, array<string, int>> $groupedByLogin
+     * @param array<string, mixed> $groupedByLogin
      *
-     * @return array<string, array<string, int>>
+     * @return array<string, mixed>
      */
     public static function reorderByTeamOrder(array $groupedByLogin): array
     {
