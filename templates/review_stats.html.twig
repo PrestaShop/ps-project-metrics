@@ -107,11 +107,11 @@
         {% for total in data %}
           <td>
             {% if (total <= 2 ) %}
-            <span class="label label-danger">
+            <span class="badge bg-danger">
             {% elseif (total <= 4 ) %}
-            <span class="label label-warning">
+            <span class="badge bg-warning">
             {% elseif (total >= 20 ) %}
-            <span class="label label-success">
+            <span class="badge bg-success">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star"
                  viewBox="0 0 16 16">
               <path
