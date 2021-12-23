@@ -35,4 +35,16 @@ class DayComputer
                 return $previousWorkedDay;
         }
     }
+
+    /**
+     * @param DateTime $dateTime
+     *
+     * @return bool
+     */
+    public static function isItWeekend(DateTime $dateTime): bool
+    {
+        $weekDay = $dateTime->format('w');
+
+        return (in_array($weekDay, [0, 6]));
+    }
 }

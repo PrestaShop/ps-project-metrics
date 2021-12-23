@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Helper\DayComputer;
 use App\Helper\PRsWaitingRecordService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -43,6 +44,12 @@ class RecordPRsWaitingTotalCommand extends Command
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'Dry run'
+            )
+            ->addOption(
+                'no-weekend',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Dont run on weekend'
             );
     }
 
@@ -57,7 +64,16 @@ class RecordPRsWaitingTotalCommand extends Command
         $dryRunOption = $input->getOption('dry-run');
         $isDryRun = ('false' !== $dryRunOption);
 
+        $noWeekendRunOption = $input->getOption('no-weekend');
+        $noWeekendRun = ('true' === $noWeekendRunOption);
+
         $day = new DateTime();
+
+        if (DayComputer::isItWeekend($day) && $noWeekendRun) {
+            $output->writeln('No run on the weekend');
+            return 0;
+        }
+
         $output->writeln(sprintf(
             'Record pull requests waiting for %s (dry-run: %s)',
             $day->format('Y-m-d'),

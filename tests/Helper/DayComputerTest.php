@@ -69,4 +69,17 @@ class DayComputerTest extends TestCase
             DayComputer::getPreviousWorkedDayFromDateTime($dateTime)->format('Y-m-d')
         );
     }
+
+    public function testIsItWeekend(): void
+    {
+        $dateTime1 = new DateTime('2021-12-21 05:00:00');
+        $dateTime2 = new DateTime('2021-12-24 05:00:00');
+        $dateTime3 = new DateTime('2021-12-25 05:00:00');
+        $dateTime4 = new DateTime('2021-12-26 05:00:00');
+
+        $this->assertFalse(DayComputer::isItWeekend($dateTime1));
+        $this->assertFalse(DayComputer::isItWeekend($dateTime2));
+        $this->assertTrue(DayComputer::isItWeekend($dateTime3));
+        $this->assertTrue(DayComputer::isItWeekend($dateTime4));
+    }
 }
