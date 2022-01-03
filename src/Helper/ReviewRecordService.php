@@ -11,6 +11,7 @@ namespace App\Helper;
 
 use App\Database\Entity\ReviewStat;
 use DateTime;
+use Exception;
 use Doctrine\ORM\EntityManager;
 
 class ReviewRecordService
@@ -131,13 +132,13 @@ class ReviewRecordService
 		', $login, $from, $to);
         $json = json_encode(['query' => $query, 'variables' => []]);
 
-        $chObj = curl_init();
-        curl_setopt($chObj, CURLOPT_URL, 'https://api.github.com/graphql');
-        curl_setopt($chObj, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($chObj, CURLOPT_CUSTOMREQUEST, 'POST');
-        curl_setopt($chObj, CURLOPT_VERBOSE, false);
-        curl_setopt($chObj, CURLOPT_POSTFIELDS, $json);
-        curl_setopt($chObj, CURLOPT_HTTPHEADER,
+        $curlHandle = curl_init();
+        curl_setopt($curlHandle, CURLOPT_URL, 'https://api.github.com/graphql');
+        curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curlHandle, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($curlHandle, CURLOPT_VERBOSE, false);
+        curl_setopt($curlHandle, CURLOPT_POSTFIELDS, $json);
+        curl_setopt($curlHandle, CURLOPT_HTTPHEADER,
             array(
                 'User-Agent: PHP Script',
                 'Content-Type: application/json;charset=utf-8',
@@ -145,7 +146,16 @@ class ReviewRecordService
             )
         );
 
-        return curl_exec($chObj);
+        $data = curl_exec($curlHandle);
+
+        $info = curl_getinfo($curlHandle);
+        $code = $info['http_code'];
+
+        if ($code !== 200) {
+            throw new Exception(sprintf('Received %s response', $code));
+        }
+
+        return $data;
     }
 
     /**
