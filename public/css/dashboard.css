@@ -36,6 +36,16 @@ footer {
     margin-bottom: 50px;
 }
 
+.light-jumbotron {
+    max-width: 100%;
+    background-color: #e3e3e3;
+    border: 1px solid grey;
+    padding: 30px;
+    border-radius: 25px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
 .container {
     width: 1170px;
     margin: 0 auto;
@@ -45,6 +55,11 @@ footer {
 .jumbotron .container {
     max-width: 100%;
     background-color: #222;
+}
+
+.light-jumbotron .container {
+    max-width: 100%;
+    background-color: #e3e3e3;
 }
 
 .jumbotron h1 {

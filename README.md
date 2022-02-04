@@ -3,8 +3,8 @@
 [![PHPUnit tests](https://github.com/matks/fruitdelapassion/actions/workflows/phpunit.yml/badge.svg)](https://github.com/matks/fruitdelapassion/actions/workflows/phpunit.yml)
 [![PHPStan](https://github.com/matks/fruitdelapassion/actions/workflows/phpstan.yml/badge.svg)](https://github.com/matks/fruitdelapassion/actions/workflows/phpstan.yml)
 
-
 Symfony 5 application that collects and displays
+
 - GitHub pull request review statistics
 - GitHub waiting pull request statistics
 
@@ -57,7 +57,8 @@ php bin/console matks:prs-waiting-stats:record
 php bin/console matks:review-stats:record
 ```
 
-Each command can be triggered as dry-run (does not persist data) or not. Default is dry-run enabled, so in order to persist the data you need to add `--dry-run=false`:
+Each command can be triggered as dry-run (does not persist data) or not. Default is dry-run enabled, so in order to
+persist the data you need to add `--dry-run=false`:
 
 ```
 php bin/console matks:prs-waiting-stats:record --dry-run=false
@@ -75,6 +76,7 @@ vendor/bin/phpunit -c phpunit.xml
 Some tests do load fixtures powered by a sqlite driver
 
 Run static analysis using phpstan
+
 ```
 vendor/bin/phpstan analyse -c phpstan.neon
 ```
