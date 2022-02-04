@@ -4,17 +4,11 @@
 #}
 {% extends 'base.html.twig' %}
 
-{% block css %}
-  {{ parent() }}
-  <link href="/css/github.css" rel="stylesheet">
-
-{% endblock %}
-
 {% block page_header %}
 
   <div class="page-title">
     <img src="/img/fruitpassion.png" width="50px" height="50px" class="sticker-image"/>
-    <h1>Waiting for review</h1>
+    <h1>Snapshot - PRs Waiting for review for how long</h1>
   </div>
 {% endblock %}
 
@@ -22,9 +16,10 @@
   <div class="jumbotron">
     <h2>About this dashboard</h2>
     <div>
-      This dashboard shows the PRs waiting for review, with how long since last review.<br/>
+      This dashboard shows a snapshot of the PRs waiting for review, with how long since last review.<br/>
+      It is experimental.
       <a href="{{ url }}">Find
-        the list on GitHub</a>
+        the list of these PRs on GitHub</a>
     </div>
   </div>
 {% endblock %}

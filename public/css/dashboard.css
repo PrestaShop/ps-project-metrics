@@ -68,3 +68,7 @@ footer {
     font-weight: 600;
     text-transform: uppercase;
 }
+
+.nav-item:not(:last-child) {
+    border-right: 1px solid silver;
+}
