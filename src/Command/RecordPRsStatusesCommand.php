@@ -10,14 +10,13 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Helper\DayComputer;
+use App\Helper\PRWaitingReviewStatusDeleteService;
 use App\Helper\PRWaitingReviewStatusRecordService;
-use App\Helper\ReviewRecordService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use DateTime;
-use Exception;
 
 class RecordPRsStatusesCommand extends Command
 {
@@ -30,11 +29,18 @@ class RecordPRsStatusesCommand extends Command
     private $recordService;
 
     /**
-     * @param PRWaitingReviewStatusRecordService $recordService
+     * @var PRWaitingReviewStatusDeleteService
      */
-    public function __construct(PRWaitingReviewStatusRecordService $recordService)
+    private $deleteService;
+
+    /**
+     * @param PRWaitingReviewStatusRecordService $recordService
+     * @param PRWaitingReviewStatusDeleteService $deleteService
+     */
+    public function __construct(PRWaitingReviewStatusRecordService $recordService, PRWaitingReviewStatusDeleteService $deleteService)
     {
         $this->recordService = $recordService;
+        $this->deleteService = $deleteService;
         parent::__construct();
     }
 
@@ -74,6 +80,12 @@ class RecordPRsStatusesCommand extends Command
         if (DayComputer::isItWeekend($day) && $noWeekendRun) {
             $output->writeln('No run on the weekend');
             return 0;
+        }
+
+        if ($isDryRun === false) {
+            $output->writeln('Delete existing pull requests review status records');
+            $this->deleteService->deleteAll();
+            $output->writeln('...done');
         }
 
         $output->writeln(sprintf(

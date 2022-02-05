@@ -28,6 +28,7 @@ services:
   App\Command\RecordPRsStatusesCommand:
     arguments:
       - '@App\Helper\PRWaitingReviewStatusRecordService'
+      - '@App\Helper\PRWaitingReviewStatusDeleteService'
 
   App\Database\MySQLPDOProvider:
     arguments:
@@ -45,6 +46,10 @@ services:
       - '@PDO'
 
   App\Helper\PRWaitingReviewStatusListingService:
+    arguments:
+      - '@PDO'
+
+  App\Helper\PRWaitingReviewStatusDeleteService:
     arguments:
       - '@PDO'
 
