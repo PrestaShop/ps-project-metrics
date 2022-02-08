@@ -1,0 +1,43 @@
+<div
+    class="flex-auto min-width-0 p-2 pr-3 pr-md-2 js-issue-row Box-row Box-row--focus-gray p-0 mt-0 js-navigation-item">
+  <a class="v-align-middle Link--muted h4 pr-1" style="color:blue !important"
+     href="https://github.com/{{ PR.repo_name }}">
+    {{ PR.repo_name }}
+  </a>
+
+  <a class="Link--primary v-align-middle no-underline h4 js-navigation-open markdown-title"
+     href="{{ PR.url }}">
+    {{ PR.name }}
+  </a>
+  <span class="labels lh-default d-block d-md-inline">
+          {% if PR.team == true %}
+            <a href="#" title="team"
+               style="--label-r:6;--label-g:224;--label-b:50;--label-h:132;--label-s:94;--label-l:45;"
+               class="IssueLabel hx_IssueLabel">
+                  team</a>
+          {% endif %}
+          <a href="#" title="Last action"
+             style="--label-r:212;--label-g:197;--label-b:249;--label-h:257;--label-s:81;--label-l:87;"
+             class="IssueLabel hx_IssueLabel">
+            last commit: {{ PR.day_since_last_commit }} days</a>
+        </span>
+
+  <div class="d-flex mt-1 text-small color-fg-muted">
+          <span class="opened-by">
+            #{{ PR.pr_number }}
+              opened <relative-time class="no-wrap">on {{ PR.created_at }}</relative-time> by
+              <a class="Link--muted" href="http://github.com/{{ PR.author }}">{{ PR.author }}</a>
+
+          </span>
+
+    <span class="d-none d-md-inline-flex">
+          <span class="d-inline-block ml-1">
+            •
+              <a class="Link--muted tooltipped tooltipped-s" aria-label="Review required before merging"
+                 href="{{ PR.url }}">
+                Review required
+              </a>
+          </span>
+        </span>
+  </div>
+</div>

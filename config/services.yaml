@@ -13,6 +13,10 @@ services:
     arguments:
       - '@App\Helper\PRsWaitingStatsService'
 
+  App\Controller\PRWaitingReviewStatusController:
+    arguments:
+      - '@App\Helper\PRWaitingReviewStatusListingService'
+
   App\Command\RecordReviewsCommand:
     arguments:
       - '@App\Helper\ReviewRecordService'
@@ -20,6 +24,11 @@ services:
   App\Command\RecordPRsWaitingTotalCommand:
     arguments:
       - '@App\Helper\PRsWaitingRecordService'
+
+  App\Command\RecordPRsStatusesCommand:
+    arguments:
+      - '@App\Helper\PRWaitingReviewStatusRecordService'
+      - '@App\Helper\PRWaitingReviewStatusDeleteService'
 
   App\Database\MySQLPDOProvider:
     arguments:
@@ -36,12 +45,25 @@ services:
     arguments:
       - '@PDO'
 
+  App\Helper\PRWaitingReviewStatusListingService:
+    arguments:
+      - '@PDO'
+
+  App\Helper\PRWaitingReviewStatusDeleteService:
+    arguments:
+      - '@PDO'
+
   App\Helper\ReviewRecordService:
     arguments:
       - '%env(resolve:APP_GH_TOKEN)%'
       - '@doctrine.orm.default_entity_manager'
 
   App\Helper\PRsWaitingRecordService:
+    arguments:
+      - '%env(resolve:APP_GH_TOKEN)%'
+      - '@doctrine.orm.default_entity_manager'
+
+  App\Helper\PRWaitingReviewStatusRecordService:
     arguments:
       - '%env(resolve:APP_GH_TOKEN)%'
       - '@doctrine.orm.default_entity_manager'
