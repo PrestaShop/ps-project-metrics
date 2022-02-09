@@ -13,8 +13,8 @@
 
   {% block css %}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/dashboard.css" rel="stylesheet">
     <link href="/css/github.css" rel="stylesheet">
+    <link href="/css/dashboard.css" rel="stylesheet">
   {% endblock %}
 
 
@@ -34,13 +34,34 @@
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item"><a class="nav-link" href="{{ path('app_main') }}">Daily review Stats per maintainer</a>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dailyStatsNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Statistics
+            </a>
+
+            <ul class="dropdown-menu" aria-labelledby="dailyStatsNavbarDropdown">
+              <li><a class="dropdown-item" href="{{ path('app_main') }}">
+                Maintainers review daily stats
+              </a></li>
+              <li><a class="dropdown-item" href="{{ path('app_view_prs_waiting_stats') }}">
+                "Waiting for..." daily stats
+              </a></li>
+            </ul>
           </li>
-          <li class="nav-item"><a class="nav-link" href="{{ path('app_view_prs_waiting_stats') }}">Daily PRs Waiting
-              Total Stats</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ path('app_view_prs_waiting_review_status') }}">Snapshot PRs
-              Waiting for review for how long</a></li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="snapshotsNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Snapshots
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="snapshotsNavbarDropdown">
+              <li><a class="dropdown-item" href="{{ path('app_view_prs_waiting_review_status') }}">
+                "Waiting for review" monitoring
+              </a></li>
+            </ul>
+          </li>
         </ul>
+
       </div>
     </div>
   </nav>

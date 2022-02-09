@@ -8,7 +8,7 @@
 
   <div class="page-title">
     <img src="/img/fruitpassion.png" width="50px" height="50px" class="sticker-image"/>
-    <h1>Snapshot - PRs Waiting for review for how long</h1>
+    <h1>Snapshot - "Waiting for review"</h1>
   </div>
 {% endblock %}
 
@@ -17,9 +17,11 @@
     <h2>About this dashboard</h2>
     <div>
       This dashboard shows a snapshot of the PRs waiting for review, with how long since last review.<br/>
-      It is experimental.
+      It is experimental. The data might be inaccurate, especially for old Pull Requests.
       <a href="{{ url }}">Find
         the list of these PRs on GitHub</a>
+      <br/><br/>
+      This snapshot is refreshed every hour.
     </div>
   </div>
 {% endblock %}
@@ -27,6 +29,54 @@
 {% block page_content %}
 
   <div>
+    <div>
+      <h2>Summary</h2>
+    </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Last review was</th>
+        <th scope="col">Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">Less than 4 days</th>
+        <td>{{ PRs.stats.less_than_4}}
+      </tr>
+      <tr>
+        <th scope="row">Less than 10 days</th>
+        <td>{{ PRs.stats.less_than_10}}
+      </tr>
+      <tr>
+        <th scope="row">Less than 20 days</th>
+        <td>{{ PRs.stats.less_than_20}}
+      </tr>
+      <tr>
+        <th scope="row">Less than 30 days</th>
+        <td>{{ PRs.stats.less_than_30}}
+      </tr>
+
+      <tr>
+        <th scope="row">Less than 60 days</th>
+        <td>{{ PRs.stats.less_than_60}}
+      </tr>
+      <tr>
+        <th scope="row">Less than 180 days</th>
+        <td>{{ PRs.stats.less_than_180}}
+      </tr>
+      <tr>
+        <th scope="row">More that 180 days</th>
+        <td>{{ PRs.stats.more_than_180}}
+      </tr>
+      <tr>
+        <th scope="row">Never reviewed</th>
+        <td>{{ PRs.stats.never_reviewed}}
+      </tr>
+    </tbody>
+  </table>
+
     <div class="light-jumbotron container">
       <h2>PRs not reviewed yet ({{ PRs.never_reviewed|length }} PRs)</h2>
     </div>
@@ -46,11 +96,11 @@
         <hr>
         {% if date == 0 %}
           <h3>Reviewed today</h3>
-        {% elseif date > 0 and date < 4 %}
+        {% elseif date > 0 and date <= 4 %}
           <h3>Reviewed <span class="badge bg-success">{{ date }}</span> days ago</h3>
-        {% elseif date > 4 and date < 10 %}
+        {% elseif date > 4 and date <= 10 %}
           <h3>Reviewed <span class="badge bg-primary">{{ date }}</span> days ago</h3>
-        {% elseif date > 10 and date < 20 %}
+        {% elseif date > 10 and date <= 20 %}
           <h3>Reviewed <span class="badge bg-warning">{{ date }}</span> days ago</h3>
         {% else %}
           <h3>Reviewed <span class="badge bg-danger">{{ date }}</span> days ago</h3>
