@@ -82,4 +82,46 @@ class DayComputerTest extends TestCase
         $this->assertTrue(DayComputer::isItWeekend($dateTime3));
         $this->assertTrue(DayComputer::isItWeekend($dateTime4));
     }
+
+    public function testGetXDaysBefore(): void
+    {
+        $dateTime1 = new DateTime('2021-12-21 05:00:00');
+        $dateTime2 = new DateTime('2021-12-26 10:00:00');
+
+        $this->assertEquals(
+            new DateTime('2021-12-19 05:00:00'),
+            DayComputer::getXDayBefore(2, $dateTime1)
+        );
+        $this->assertEquals(
+            new DateTime('2021-12-23 10:00:00'),
+            DayComputer::getXDayBefore(3, $dateTime2)
+        );
+
+        $this->assertEquals(
+            new DateTime('2021-12-14 05:00:00'),
+            DayComputer::getXDayBefore(7, $dateTime1)
+        );
+        $this->assertEquals(
+            new DateTime('2021-12-19 10:00:00'),
+            DayComputer::getXDayBefore(7, $dateTime2)
+        );
+    }
+
+    public function testBuildArrayOfDatesFromTo(): void
+    {
+        $dateTime1 = new DateTime('2021-12-21 05:00:00');
+        $dateTime2 = new DateTime('2021-12-24 05:00:00');
+        $dateTime3 = new DateTime('2021-12-26 05:00:00');
+
+
+        $this->assertEquals(
+            ['2021-12-21', '2021-12-22', '2021-12-23', '2021-12-24'],
+            DayComputer::buildArrayOfDatesFromTo($dateTime1, $dateTime2)
+        );
+
+        $this->assertEquals(
+            ['2021-12-21', '2021-12-22', '2021-12-23', '2021-12-24', '2021-12-25', '2021-12-26'],
+            DayComputer::buildArrayOfDatesFromTo($dateTime1, $dateTime3)
+        );
+    }
 }

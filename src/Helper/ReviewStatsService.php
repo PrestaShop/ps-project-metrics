@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Helper;
 
+use DateTime;
 use PDO;
 
 class ReviewStatsService
@@ -27,73 +28,90 @@ class ReviewStatsService
     }
 
     /**
-     * @param int $recordsNumber
-     * @param int $skipRecordsNumber
+     * @param DateTime $from
+     * @param DateTime $to
      *
      * @return array<string, mixed>
      */
-    public function getTeamStatsGroupedByLogin(int $recordsNumber, int $skipRecordsNumber): array
+    public function getTeamStatsGroupedByLogin(DateTime $from, DateTime $to): array
     {
-        $sql = 'SELECT login, day, total FROM reviews ORDER BY day DESC LIMIT ' . $recordsNumber . ' OFFSET ' . $skipRecordsNumber;
-        $result = $this->pdo->query($sql)->fetchAll();
+        $teamMembers = TeamHelper::getTeam();
 
-        $days = [];
-        $groupedByLogin = TeamHelper::getTeam(true);
+        $sql = sprintf('SELECT login, day, total FROM reviews
+WHERE login IN (%s)
+AND day BETWEEN \'%s\' AND \'%s\'
+ORDER BY day DESC',
+            '"' . implode('","', $teamMembers) . '"',
+            $from->format('Y-m-d'),
+            $to->format('Y-m-d')
+        );
+
+        $sqlResult = $this->pdo->query($sql)->fetchAll();
+
+        $dateRange = DayComputer::buildArrayOfDatesFromTo($from, $to);
+
+        $resultToBuild = TeamHelper::getTeam(true);
+        foreach ($resultToBuild as $key => $itemToBuild) {
+            $resultToBuild[$key] = array_fill_keys($dateRange, 'no_data');
+        }
+
         $total = 0;
+        foreach ($sqlResult as $item) {
+            $itemDay = $item['day'];
+            $itemLogin = $item['login'];
 
-        foreach ($result as $item) {
-            $days[$item['day']] = $item['day'];
-            $groupedByLogin = $this->addOrInsert(
-                $groupedByLogin,
-                $item['login'],
-                $item['day'],
-                (int)$item['total']
-            );
+            $resultToBuild[$itemLogin][$itemDay] = (int)$item['total'];
             $total += (int)$item['total'];
         }
 
-        foreach ($groupedByLogin as $login => $group) {
-            $groupedByLogin[$login] = array_reverse($group);
-        }
-        $groupedByLogin = $this->computeAndInsertTotals($groupedByLogin);
+        $resultToBuild = $this->computeAndInsertTotals($resultToBuild);
 
         return [
-            'days' => array_reverse($days),
-            'lastSeven' => $groupedByLogin,
+            'days' => $dateRange,
+            'lastSeven' => $resultToBuild,
             'totalTeam' => $total,
         ];
     }
 
     /**
-     * @param int $recordsNumber
-     * @param int $skipRecordsNumber
+     * @param DateTime $from
+     * @param DateTime $to
      *
      * @return array<string, mixed>
      */
-    public function getTeamStatsGroupedByDay(int $recordsNumber, int $skipRecordsNumber): array
+    public function getTeamStatsGroupedByDay(DateTime $from, DateTime $to): array
     {
-        $sql = 'SELECT login, day, total FROM reviews ORDER BY day DESC LIMIT ' . $recordsNumber . ' OFFSET ' . $skipRecordsNumber;
-        $result = $this->pdo->query($sql)->fetchAll();
+        $teamMembers = TeamHelper::getTeam();
 
-        $groupedByDay = [];
+        $sql = sprintf('SELECT login, day, total FROM reviews
+WHERE login IN (%s)
+AND day BETWEEN \'%s\' AND \'%s\'
+ORDER BY day DESC',
+            '"' . implode('","', $teamMembers) . '"',
+            $from->format('Y-m-d'),
+            $to->format('Y-m-d')
+        );
 
-        foreach ($result as $item) {
-            $groupedByDay = $this->addOrInsert(
-                $groupedByDay,
-                $item['day'],
-                $item['login'],
-                (int)$item['total']
-            );
+        $sqlResult = $this->pdo->query($sql)->fetchAll();
+
+        $dateRange = DayComputer::buildArrayOfDatesFromTo($from, $to);
+        $resultToBuild = array_fill_keys($dateRange, []);
+        foreach ($resultToBuild as $key => $itemToBuild) {
+            $resultToBuild[$key] = array_fill_keys(TeamHelper::getTeam(), 'no_data');
         }
 
-        foreach ($groupedByDay as $day => $group) {
-            $groupedByDay[$day] = TeamHelper::reorderByTeamOrder($group);
+        foreach ($sqlResult as $item) {
+            $itemDay = $item['day'];
+            $itemLogin = $item['login'];
+
+            $resultToBuild[$itemDay][$itemLogin] = (int)$item['total'];
         }
 
-        return [
-            'teamMembers' => TeamHelper::getTeam(),
-            'lastThirty' => $groupedByDay,
-        ];
+        foreach ($resultToBuild as $day => $group) {
+            $resultToBuild[$day] = TeamHelper::reorderByTeamOrder($group);
+        }
+
+        return array_reverse($resultToBuild);
     }
 
     /**
@@ -103,8 +121,13 @@ class ReviewStatsService
      */
     public function getDeveloperStats(string $login): array
     {
+        $today = new DateTime();
+        $threeMonthBefore = DayComputer::getXDayBefore(90, $today);
+
         $sql = sprintf(
-            "SELECT day, PR, total FROM reviews WHERE login = '%s' ORDER BY day DESC", $login);;
+            'SELECT day, PR, total FROM reviews WHERE login = \'%s\' AND day BETWEEN \'%s\' AND \'%s\'
+ORDER BY day DESC', $login, $threeMonthBefore->format('Y-m-d'), $today->format('Y-m-d'));
+
         $result = $this->pdo->query($sql)->fetchAll();
 
         $cleanResult = [];
@@ -180,7 +203,7 @@ class ReviewStatsService
     }
 
     /**
-     * @param array<string, array<string, int>> $groupedByLogin
+     * @param array<string, array<string, mixed>> $groupedByLogin
      *
      * @return array<string, array<string, int>>
      */
@@ -191,6 +214,10 @@ class ReviewStatsService
         foreach ($groupedByLogin as $login => $dayStats) {
             $sum = 0;
             foreach ($dayStats as $dayStat) {
+                if ($dayStat === 'no_data') {
+                    continue;
+                }
+
                 $sum += $dayStat;
             }
             $copy[$login]['total'] = $sum;
