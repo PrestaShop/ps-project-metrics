@@ -9,7 +9,9 @@ declare(strict_types=1);
 
 namespace App\Helper;
 
+use DateInterval;
 use DateTime;
+use DatePeriod;
 
 class DayComputer
 {
@@ -36,6 +38,21 @@ class DayComputer
         }
     }
 
+
+    /**
+     * @param int $x
+     * @param DateTime $dateTime
+     *
+     * @return DateTime
+     */
+    public static function getXDayBefore(int $x, DateTime $dateTime): DateTime
+    {
+        $previousWorkedDay = clone $dateTime;
+        $previousWorkedDay->sub(new \DateInterval('P' . $x . 'D'));
+
+        return $previousWorkedDay;
+    }
+
     /**
      * @param DateTime $dateTime
      *
@@ -46,5 +63,21 @@ class DayComputer
         $weekDay = $dateTime->format('w');
 
         return (in_array($weekDay, [0, 6]));
+    }
+
+    public static function buildArrayOfDatesFromTo(DateTime $from, DateTime $to): array
+    {
+        $interval = new DateInterval('P1D');
+        $dateRange = new DatePeriod($from, $interval, $to);
+
+        $result = [];
+
+        foreach ($dateRange as $date) {
+            $result[] = $date->format("Y-m-d");
+        }
+
+        $result[] = $to->format('Y-m-d');
+
+        return $result;
     }
 }

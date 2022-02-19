@@ -9,8 +9,10 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Helper\DayComputer;
 use App\Helper\ReviewStatsService;
 use App\Helper\TeamHelper;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -34,17 +36,19 @@ class ReviewStatsHomeController extends AbstractController
      */
     public function home(): Response
     {
-        $teamSize = 8;
-        $sevenDays = 7;
-        $twentyThreeDays = 23;
+        $today = new DateTime();
+        $yesterday = DayComputer::getXDayBefore(1, $today);
+        $eightDaysBefore = DayComputer::getXDayBefore(8, $today);
+        $nineDaysBefore = DayComputer::getXDayBefore(9, $today);
+        $oneMonthBefore = DayComputer::getXDayBefore(30, $today);
 
-        $lastSevenAndDays = $this->statisticsService->getTeamStatsGroupedByLogin($teamSize * $sevenDays, 0);
-
-        $lastThirtyDays = $this->statisticsService->getTeamStatsGroupedByDay($teamSize * $twentyThreeDays, $teamSize * $sevenDays);
+        $lastSevenAndDays = $this->statisticsService->getTeamStatsGroupedByLogin($eightDaysBefore, $yesterday);
+        $lastThirtyDays = $this->statisticsService->getTeamStatsGroupedByDay($oneMonthBefore, $nineDaysBefore);
 
         return $this->render(
             'review_stats.html.twig',
             [
+                'teamMembers' => TeamHelper::getTeam(),
                 'lastSeven' => $lastSevenAndDays,
                 'lastThirty' => $lastThirtyDays,
             ]

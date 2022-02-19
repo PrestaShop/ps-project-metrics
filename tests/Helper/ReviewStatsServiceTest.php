@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace App\Tests\Helper;
 
 use App\Helper\ReviewStatsService;
+use DateTime;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
 use PDO;
@@ -65,19 +66,31 @@ class ReviewStatsServiceTest extends KernelTestCase
 
         $statsService = new ReviewStatsService($this->getPDO());
 
-        $stats = $statsService->getTeamStatsGroupedByLogin(10, 0);
+        $stats = $statsService->getTeamStatsGroupedByLogin(new DateTime('2021-12-01'), new DateTime('2021-12-05'));
+
+        $emptyData = [
+            "2021-12-01" => 'no_data',
+            "2021-12-02" => 'no_data',
+            "2021-12-03" => 'no_data',
+            "2021-12-04" => 'no_data',
+            "2021-12-05" => 'no_data',
+            "total" => 0,
+        ];
 
         $expected = ["days" => [
-            "2021-12-01" => "2021-12-01",
-            "2021-12-02" => "2021-12-02",
-            "2021-12-03" => "2021-12-03",
-            "2021-12-04" => "2021-12-04",
-            "2021-12-05" => "2021-12-05",
+            "2021-12-01",
+            "2021-12-02",
+            "2021-12-03",
+            "2021-12-04",
+            "2021-12-05",
         ],
             "lastSeven" => [
                 "PierreRambaud" => [
                     "2021-12-01" => 10,
                     "2021-12-02" => 20,
+                    "2021-12-03" => 'no_data',
+                    "2021-12-04" => 'no_data',
+                    "2021-12-05" => 'no_data',
                     "total" => 30,
                 ],
                 "matks" => [
@@ -88,27 +101,19 @@ class ReviewStatsServiceTest extends KernelTestCase
                     "2021-12-05" => 2,
                     "total" => 12,
                 ],
-                "jolelievre" => [
-                    "total" => 0,
-                ],
-                "matthieu-rolland" => [
-                    "total" => 0,
-                ],
-                "Progi1984" => [
-                    "total" => 0,
-                ],
+                "jolelievre" => $emptyData,
+                "matthieu-rolland" => $emptyData,
+                "Progi1984" => $emptyData,
                 "atomiix" => [
                     "2021-12-01" => 3,
+                    "2021-12-02" => 'no_data',
                     "2021-12-03" => 4,
+                    "2021-12-04" => 'no_data',
                     "2021-12-05" => 2,
                     "total" => 9,
                 ],
-                "NeOMakinG" => [
-                    "total" => 0,
-                ],
-                "sowbiba" => [
-                    "total" => 0,
-                ]
+                "NeOMakinG" => $emptyData,
+                "sowbiba" => $emptyData,
             ],
             "totalTeam" => 51
         ];
@@ -122,69 +127,58 @@ class ReviewStatsServiceTest extends KernelTestCase
 
         $statsService = new ReviewStatsService($this->getPDO());
 
-        $stats = $statsService->getTeamStatsGroupedByDay(10, 0);
+        $stats = $statsService->getTeamStatsGroupedByDay(new DateTime('2021-12-01'), new DateTime('2021-12-05'));
 
-        $expected = ["teamMembers" => [
-            0 => "PierreRambaud",
-            1 => "matks",
-            2 => "jolelievre",
-            3 => "matthieu-rolland",
-            4 => "Progi1984",
-            5 => "atomiix",
-            6 => "NeOMakinG",
-            7 => "sowbiba",
-        ],
-            "lastThirty" => [
-                "2021-12-05" => [
-                    "PierreRambaud" => 0,
-                    "matks" => 2,
-                    "jolelievre" => 0,
-                    "matthieu-rolland" => 0,
-                    "Progi1984" => 0,
-                    "atomiix" => 2,
-                    "NeOMakinG" => 0,
-                    "sowbiba" => 0,
-                ],
-                "2021-12-04" => [
-                    "PierreRambaud" => 0,
-                    "matks" => 4,
-                    "jolelievre" => 0,
-                    "matthieu-rolland" => 0,
-                    "Progi1984" => 0,
-                    "atomiix" => 0,
-                    "NeOMakinG" => 0,
-                    "sowbiba" => 0,
-                ],
-                "2021-12-03" => [
-                    "PierreRambaud" => 0,
-                    "matks" => 3,
-                    "jolelievre" => 0,
-                    "matthieu-rolland" => 0,
-                    "Progi1984" => 0,
-                    "atomiix" => 4,
-                    "NeOMakinG" => 0,
-                    "sowbiba" => 0,
-                ],
-                "2021-12-02" => [
-                    "PierreRambaud" => 20,
-                    "matks" => 2,
-                    "jolelievre" => 0,
-                    "matthieu-rolland" => 0,
-                    "Progi1984" => 0,
-                    "atomiix" => 0,
-                    "NeOMakinG" => 0,
-                    "sowbiba" => 0,
-                ],
-                "2021-12-01" => [
-                    "PierreRambaud" => 10,
-                    "matks" => 1,
-                    "jolelievre" => 0,
-                    "matthieu-rolland" => 0,
-                    "Progi1984" => 0,
-                    "atomiix" => 3,
-                    "NeOMakinG" => 0,
-                    "sowbiba" => 0,
-                ]
+        $expected = [
+            "2021-12-05" => [
+                "PierreRambaud" => 'no_data',
+                "matks" => 2,
+                "jolelievre" => 'no_data',
+                "matthieu-rolland" => 'no_data',
+                "Progi1984" => 'no_data',
+                "atomiix" => 2,
+                "NeOMakinG" => 'no_data',
+                "sowbiba" => 'no_data',
+            ],
+            "2021-12-04" => [
+                "PierreRambaud" => 'no_data',
+                "matks" => 4,
+                "jolelievre" => 'no_data',
+                "matthieu-rolland" => 'no_data',
+                "Progi1984" => 'no_data',
+                "atomiix" => 'no_data',
+                "NeOMakinG" => 'no_data',
+                "sowbiba" => 'no_data',
+            ],
+            "2021-12-03" => [
+                "PierreRambaud" => 'no_data',
+                "matks" => 3,
+                "jolelievre" => 'no_data',
+                "matthieu-rolland" => 'no_data',
+                "Progi1984" => 'no_data',
+                "atomiix" => 4,
+                "NeOMakinG" => 'no_data',
+                "sowbiba" => 'no_data',
+            ],
+            "2021-12-02" => [
+                "PierreRambaud" => 20,
+                "matks" => 2,
+                "jolelievre" => 'no_data',
+                "matthieu-rolland" => 'no_data',
+                "Progi1984" => 'no_data',
+                "atomiix" => 'no_data',
+                "NeOMakinG" => 'no_data',
+                "sowbiba" => 'no_data',
+            ],
+            "2021-12-01" => [
+                "PierreRambaud" => 10,
+                "matks" => 1,
+                "jolelievre" => 'no_data',
+                "matthieu-rolland" => 'no_data',
+                "Progi1984" => 'no_data',
+                "atomiix" => 3,
+                "NeOMakinG" => 'no_data',
+                "sowbiba" => 'no_data',
             ]
         ];
 
