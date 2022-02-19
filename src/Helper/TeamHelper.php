@@ -27,6 +27,7 @@ class TeamHelper
             'atomiix' => [],            # Thomas B.
             'NeOMakinG' => [],          # Valentin S.
             'sowbiba' => [],            # Ibrahima S.
+            'kpodemski' => [],          # Krystian P.
         ];
 
         if ($asKeys) {

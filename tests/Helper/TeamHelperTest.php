@@ -25,6 +25,7 @@ class TeamHelperTest extends TestCase
             'atomiix',
             'NeOMakinG',
             'sowbiba',
+            'kpodemski',
         ];
 
         $this->assertEquals($expected, TeamHelper::getTeam());
@@ -41,6 +42,7 @@ class TeamHelperTest extends TestCase
             'atomiix' => [],            # Thomas B.
             'NeOMakinG' => [],          # Valentin S.
             'sowbiba' => [],            # Ibrahima S.
+            'kpodemski' => [],          # Krystian P.
         ];
 
 
@@ -50,25 +52,27 @@ class TeamHelperTest extends TestCase
     public function testReorderByTeamOrder(): void
     {
         $input = [
-            'matks' => 1,              # Mathieu F.
-            'sowbiba' => 62,            # Ibrahima S.
-            'jolelievre' => 28,         # Jonathan L.
-            'Progi1984' => 91,          # Franck L.
-            'PierreRambaud' => 19,      # Pierre R.
-            'atomiix' => 82,            # Thomas B.
-            'NeOMakinG' => 2,          # Valentin S.
-            'matthieu-rolland' => 29,   # Matthieu R.
+            'matks' => 1,
+            'sowbiba' => 62,
+            'jolelievre' => 28,
+            'Progi1984' => 91,
+            'PierreRambaud' => 19,
+            'atomiix' => 82,
+            'NeOMakinG' => 2,
+            'matthieu-rolland' => 29,
+            'kpodemski' => 72,
         ];
 
         $expected = [
-            'PierreRambaud' => 19,      # Pierre R.
-            'matks' => 1,              # Mathieu F.
-            'jolelievre' => 28,         # Jonathan L.
-            'matthieu-rolland' => 29,   # Matthieu R.
-            'Progi1984' => 91,          # Franck L.
-            'atomiix' => 82,            # Thomas B.
-            'NeOMakinG' => 2,          # Valentin S.
-            'sowbiba' => 62,            # Ibrahima S.
+            'PierreRambaud' => 19,
+            'matks' => 1,
+            'jolelievre' => 28,
+            'matthieu-rolland' => 29,
+            'Progi1984' => 91,
+            'atomiix' => 82,
+            'NeOMakinG' => 2,
+            'sowbiba' => 62,
+            'kpodemski' => 72,
         ];
 
         $this->assertEquals($expected, TeamHelper::reorderByTeamOrder($input));
