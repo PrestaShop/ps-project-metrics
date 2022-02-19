@@ -34,7 +34,7 @@ class PRsWaitingStatsController extends AbstractController
      */
     public function viewStats(): Response
     {
-        $stats = $this->statisticsService->getTeamStatsGroupedByDay(30);
+        $stats = $this->statisticsService->getTeamStatsGroupedByDay(180);
 
         return $this->render(
             'pr_waiting_stats.html.twig',

@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Helper;
 
+use DateTime;
 use PDO;
 
 class PRWaitingReviewStatusListingService
@@ -56,9 +57,13 @@ class PRWaitingReviewStatusListingService
             }
         }
 
+        $stats = $this->computeDayStats($groupedByLastReviewDate);
+        $stats['never_reviewed'] = count($neverReviewed);
+
         return [
             'never_reviewed' => $neverReviewed,
             'reviewed_at_least_once' => $groupedByLastReviewDate,
+            'stats' => $stats,
         ];
     }
 
@@ -78,5 +83,45 @@ class PRWaitingReviewStatusListingService
         $groupedByLastReviewDate[$day][] = $dataRow;
 
         return $groupedByLastReviewDate;
+    }
+
+    /**
+     *
+     * @param array<string, array<string, int>> $groupedByLastReviewDate
+     *
+     * @return array<string, int>
+     */
+    private function computeDayStats(array $groupedByLastReviewDate): array
+    {
+        $stats = [
+            'less_than_4' => 0,
+            'less_than_10' => 0,
+            'less_than_20' => 0,
+            'less_than_30' => 0,
+            'less_than_60' => 0,
+            'less_than_180' => 0,
+            'more_than_180' => 0
+        ];
+        $today = new DateTime();
+
+        foreach($groupedByLastReviewDate as $diff => $PRs) {
+            if ($diff >= 0 && $diff <= 4) {
+                $stats['less_than_4']++;
+            } elseif ($diff > 4 && $diff <= 10) {
+                $stats['less_than_10']++;
+            } elseif ($diff > 10 && $diff <= 20) {
+                $stats['less_than_20']++;
+            } elseif ($diff > 20 && $diff <= 30) {
+                $stats['less_than_30']++;
+            } elseif ($diff > 30 && $diff <= 60) {
+                $stats['less_than_60']++;
+            } elseif ($diff > 60 && $diff <= 180) {
+                $stats['less_than_180']++;
+            } else {
+                $stats['more_than_180']++;
+            }
+        }
+
+        return $stats;
     }
 }

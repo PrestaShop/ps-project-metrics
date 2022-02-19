@@ -72,3 +72,11 @@ footer {
 .nav-item:not(:last-child) {
     border-right: 1px solid silver;
 }
+
+.dropdown-menu {
+    width: auto;
+}
+
+.dropdown-menu::before, .dropdown-menu::after {
+    border: 0px solid;
+}
