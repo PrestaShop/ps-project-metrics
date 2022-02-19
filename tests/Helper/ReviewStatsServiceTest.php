@@ -114,6 +114,7 @@ class ReviewStatsServiceTest extends KernelTestCase
                 ],
                 "NeOMakinG" => $emptyData,
                 "sowbiba" => $emptyData,
+                'kpodemski' => $emptyData,
             ],
             "totalTeam" => 51
         ];
@@ -139,6 +140,7 @@ class ReviewStatsServiceTest extends KernelTestCase
                 "atomiix" => 2,
                 "NeOMakinG" => 'no_data',
                 "sowbiba" => 'no_data',
+                "kpodemski" => 'no_data',
             ],
             "2021-12-04" => [
                 "PierreRambaud" => 'no_data',
@@ -149,6 +151,7 @@ class ReviewStatsServiceTest extends KernelTestCase
                 "atomiix" => 'no_data',
                 "NeOMakinG" => 'no_data',
                 "sowbiba" => 'no_data',
+                "kpodemski" => 'no_data',
             ],
             "2021-12-03" => [
                 "PierreRambaud" => 'no_data',
@@ -159,6 +162,7 @@ class ReviewStatsServiceTest extends KernelTestCase
                 "atomiix" => 4,
                 "NeOMakinG" => 'no_data',
                 "sowbiba" => 'no_data',
+                "kpodemski" => 'no_data',
             ],
             "2021-12-02" => [
                 "PierreRambaud" => 20,
@@ -169,6 +173,7 @@ class ReviewStatsServiceTest extends KernelTestCase
                 "atomiix" => 'no_data',
                 "NeOMakinG" => 'no_data',
                 "sowbiba" => 'no_data',
+                "kpodemski" => 'no_data',
             ],
             "2021-12-01" => [
                 "PierreRambaud" => 10,
@@ -179,6 +184,7 @@ class ReviewStatsServiceTest extends KernelTestCase
                 "atomiix" => 3,
                 "NeOMakinG" => 'no_data',
                 "sowbiba" => 'no_data',
+                "kpodemski" => 'no_data',
             ]
         ];
 
