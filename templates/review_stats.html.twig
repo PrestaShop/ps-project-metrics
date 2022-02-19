@@ -58,7 +58,11 @@
               <span class="badge bg-secondary">{{ total }}</span>
             {% else %}
               {% if (total == 'no_data' ) %}
-                <span class="badge bg-secondary">(n/a)</span>
+                {% if (key in weekendDays ) %}
+                  <span class="badge bg-info">(w-e)</span>
+                {% else %}
+                  <span class="badge bg-secondary">(n/a)</span>
+                {% endif %}
               {% elseif (total <= 2 ) %}
                 <span class="badge bg-danger">{{ total }}</span>
               {% elseif (total <= 4 ) %}
@@ -104,7 +108,11 @@
         {% for total in data %}
           <td>
             {% if (total == 'no_data' ) %}
-              <span class="badge bg-secondary">(n/a))</span>
+              {% if (day in weekendDays ) %}
+                <span class="badge bg-info">(w-e)</span>
+              {% else %}
+                <span class="badge bg-secondary">(n/a)</span>
+              {% endif %}
             {% elseif (total <= 2 ) %}
               <span class="badge bg-danger">{{ total }}</span>
             {% elseif (total <= 4 ) %}
