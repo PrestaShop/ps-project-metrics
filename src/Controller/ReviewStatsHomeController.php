@@ -45,9 +45,22 @@ class ReviewStatsHomeController extends AbstractController
         $lastSevenAndDays = $this->statisticsService->getTeamStatsGroupedByLogin($eightDaysBefore, $yesterday);
         $lastThirtyDays = $this->statisticsService->getTeamStatsGroupedByDay($oneMonthBefore, $nineDaysBefore);
 
+        $weekendDays = [];
+        foreach ($lastSevenAndDays['days'] as $day) {
+            if (DayComputer::isItWeekend(new DateTime($day))) {
+                $weekendDays[] = $day;
+            }
+        }
+        foreach ($lastThirtyDays as $day => $data) {
+            if (DayComputer::isItWeekend(new DateTime($day))) {
+                $weekendDays[] = $day;
+            }
+        }
+
         return $this->render(
             'review_stats.html.twig',
             [
+                'weekendDays' => $weekendDays,
                 'teamMembers' => TeamHelper::getTeam(),
                 'lastSeven' => $lastSevenAndDays,
                 'lastThirty' => $lastThirtyDays,
