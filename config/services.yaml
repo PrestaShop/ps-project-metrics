@@ -17,6 +17,8 @@ services:
     arguments:
       - '@App\Helper\PRWaitingReviewStatusListingService'
 
+  App\Controller\ReceiveGitHubWebHookController:
+
   App\Command\RecordReviewsCommand:
     arguments:
       - '@App\Helper\ReviewRecordService'

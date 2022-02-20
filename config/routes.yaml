@@ -13,3 +13,7 @@ app_view_prs_waiting_stats:
 app_view_prs_waiting_review_status:
     path: /prs_waiting_review_status
     controller: App\Controller\PRWaitingReviewStatusController::viewListing
+
+app_receive_github_webhook:
+    path: /github_webhook
+    controller: App\Controller\ReceiveGitHubWebHookController::receive
