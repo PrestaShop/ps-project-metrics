@@ -5,8 +5,9 @@
 
 Symfony 5 application that collects and displays
 
-- GitHub pull request review statistics
-- GitHub waiting pull request statistics
+- PrestaShop Maintainers review daily stats statistics
+- PrestaShop "Waiting for..." daily total stats
+- PrestaShop "Waiting for review" for how long snapshots
 
 ## Install
 
@@ -34,6 +35,20 @@ APP_DB_PASSWORD=...
 APP_GH_TOKEN=...
 ```
 
+Example
+```
+APP_ENV=dev
+APP_SECRET=abcdefhejeljdxsjshdjfrhghefjejej
+
+DATABASE_URL="mysql://matks:matks@127.0.0.1:9999/review-stats?serverVersion=5.7"
+
+APP_DB_HOST=127.0.0.1
+APP_DB_TABLE=review-stats
+APP_DB_USER=matks
+APP_DB_PASSWORD=matks
+APP_GH_TOKEN=ghp_abchdksjdkdjfhdjzdjdzdhazdazhduzdhzd
+```
+
 ## Usage
 
 ### Browse statistics
@@ -51,10 +66,14 @@ symfony server:start
 ### Collect statistics
 
 ```
-# To collect pull request statistics
+# To collect Maintainers review daily stats statistics ; run once a day
 php bin/console matks:prs-waiting-stats:record
-# To collect pull request review statistics
+
+# To collect "Waiting for..." daily total stats ; run once a day
 php bin/console matks:review-stats:record
+
+# To collect "Waiting for review" for how long snapshots ; can be run as often as needed
+php bin/console matks:prs-statuses:record
 ```
 
 Each command can be triggered as dry-run (does not persist data) or not. Default is dry-run enabled, so in order to
