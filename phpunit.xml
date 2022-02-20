@@ -19,7 +19,7 @@
     </php>
 
     <testsuites>
-        <testsuite name="fruitdelapassion Test Suite">
+        <testsuite name="PrestaShop Project Metrics Test Suite">
             <directory>tests</directory>
         </testsuite>
     </testsuites>
