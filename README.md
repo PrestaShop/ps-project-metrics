@@ -99,3 +99,7 @@ Run static analysis using phpstan
 ```
 vendor/bin/phpstan analyse -c phpstan.neon
 ```
+
+## Documentation
+
+[Browse `/doc` folder](https://github.com/matks/fruitdelapassion/tree/master/doc)
