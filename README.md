@@ -67,10 +67,10 @@ symfony server:start
 
 ```
 # To collect Maintainers review daily stats statistics ; run once a day
-php bin/console matks:prs-waiting-stats:record
+php bin/console matks:review-stats:record
 
 # To collect "Waiting for..." daily total stats ; run once a day
-php bin/console matks:review-stats:record
+php bin/console matks:prs-waiting-stats:record
 
 # To collect "Waiting for review" for how long snapshots ; can be run as often as needed
 php bin/console matks:prs-statuses:record
