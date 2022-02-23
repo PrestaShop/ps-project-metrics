@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Database\Entity\PRReviewComment;
+use App\Helper\TeamHelper;
 use DateTime;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,9 +42,14 @@ class ReceiveGitHubWebHookController extends AbstractController
         if (!$json) {
             return new Response();
         }
+        
         if (!isset($json['comment'])
             || !isset($json['comment']['user'])
             || !isset($json['repository'])) {
+            return new Response();
+        }
+
+        if (!in_array($json['comment']['user']['login'], TeamHelper::getTeam())) {
             return new Response();
         }
 
