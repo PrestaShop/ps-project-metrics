@@ -40,12 +40,12 @@ Example
 APP_ENV=dev
 APP_SECRET=abcdefhejeljdxsjshdjfrhghefjejej
 
-DATABASE_URL="mysql://matks:matks@127.0.0.1:9999/review-stats?serverVersion=5.7"
+DATABASE_URL="mysql://abcd:abcd@127.0.0.1:9999/review-stats?serverVersion=5.7"
 
 APP_DB_HOST=127.0.0.1
 APP_DB_TABLE=review-stats
-APP_DB_USER=matks
-APP_DB_PASSWORD=matks
+APP_DB_USER=abcd
+APP_DB_PASSWORD=abcd
 APP_GH_TOKEN=ghp_abchdksjdkdjfhdjzdjdzdhazdazhduzdhzd
 ```
 
@@ -67,21 +67,21 @@ symfony server:start
 
 ```
 # To collect Maintainers review daily stats statistics ; run once a day
-php bin/console matks:review-stats:record
+php bin/console ps:review-stats:record
 
 # To collect "Waiting for..." daily total stats ; run once a day
-php bin/console matks:prs-waiting-stats:record
+php bin/console ps:prs-waiting-stats:record
 
 # To collect "Waiting for review" for how long snapshots ; can be run as often as needed
-php bin/console matks:prs-statuses:record
+php bin/console ps:prs-statuses:record
 ```
 
 Each command can be triggered as dry-run (does not persist data) or not. Default is dry-run enabled, so in order to
 persist the data you need to add `--dry-run=false`:
 
 ```
-php bin/console matks:prs-waiting-stats:record --dry-run=false
-php bin/console matks:review-stats:record --dry-run=false
+php bin/console ps:prs-waiting-stats:record --dry-run=false
+php bin/console ps:review-stats:record --dry-run=false
 ```
 
 ## Test

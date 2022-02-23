@@ -25,7 +25,7 @@ class RecordReviewsCommand extends Command
     private ReviewRecordService $recordService;
 
     /** @var string */
-    protected static $defaultName = 'matks:review-stats:record';
+    protected static $defaultName = 'ps:review-stats:record';
 
     /**
      * @param ReviewRecordService $recordService

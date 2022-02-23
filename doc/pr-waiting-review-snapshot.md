@@ -2,7 +2,7 @@
 
 ## Collection
 
-Data collection triggered by console Command `php bin/console matks:prs-statuses:record`
+Data collection triggered by console Command `php bin/console ps:prs-statuses:record`
 
 Data is collected from GitHub using Timeline API.
 

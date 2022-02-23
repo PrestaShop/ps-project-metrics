@@ -2,7 +2,7 @@
 
 ## Collection
 
-Data collection triggered by console Command `php bin/console matks:review-stats:record`
+Data collection triggered by console Command `php bin/console ps:review-stats:record`
 
 Data is collected from GitHub using GraphQL API https://docs.github.com/en/graphql/overview/explorer
 
