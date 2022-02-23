@@ -5,9 +5,10 @@
 
 Symfony 5 application that collects and displays
 
-- PrestaShop Maintainers review daily stats statistics
-- PrestaShop "Waiting for..." daily total stats
+- PrestaShop Maintainers review daily statistics
+- PrestaShop "Waiting for..." daily total statistics
 - PrestaShop "Waiting for review" for how long snapshots
+- PrestaShop pull request review comments statistics
 
 ## Install
 
@@ -66,14 +67,17 @@ symfony server:start
 ### Collect statistics
 
 ```
-# To collect Maintainers review daily stats statistics ; run once a day
+# To collect Maintainers review daily statistics ; run once a day
 php bin/console ps:review-stats:record
 
-# To collect "Waiting for..." daily total stats ; run once a day
+# To collect "Waiting for..." daily total statistics ; run once a day
 php bin/console ps:prs-waiting-stats:record
 
 # To collect "Waiting for review" for how long snapshots ; can be run as often as needed
 php bin/console ps:prs-statuses:record
+
+# To collect pull request review comments statistics ; run once a day
+php bin/console ps:pr-review-comment-stats:compute
 ```
 
 Each command can be triggered as dry-run (does not persist data) or not. Default is dry-run enabled, so in order to
