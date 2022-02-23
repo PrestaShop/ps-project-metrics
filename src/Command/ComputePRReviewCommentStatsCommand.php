@@ -20,7 +20,7 @@ use DateTime;
 class ComputePRReviewCommentStatsCommand extends Command
 {
     /** @var string */
-    protected static $defaultName = 'matks:pr-review-comment-stats:compute';
+    protected static $defaultName = 'ps:pr-review-comment-stats:compute';
 
     /**
      * @var PRReviewCommentStatsComputeService
