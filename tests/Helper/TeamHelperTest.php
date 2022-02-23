@@ -26,6 +26,7 @@ class TeamHelperTest extends TestCase
             'NeOMakinG',
             'sowbiba',
             'kpodemski',
+            'PululuK',
         ];
 
         $this->assertEquals($expected, TeamHelper::getTeam());
@@ -43,6 +44,7 @@ class TeamHelperTest extends TestCase
             'NeOMakinG' => [],          # Valentin S.
             'sowbiba' => [],            # Ibrahima S.
             'kpodemski' => [],          # Krystian P.
+            'PululuK' => [],
         ];
 
 
@@ -57,6 +59,7 @@ class TeamHelperTest extends TestCase
             'jolelievre' => 28,
             'Progi1984' => 91,
             'PierreRambaud' => 19,
+            'PululuK' => 27,
             'atomiix' => 82,
             'NeOMakinG' => 2,
             'matthieu-rolland' => 29,
@@ -73,6 +76,7 @@ class TeamHelperTest extends TestCase
             'NeOMakinG' => 2,
             'sowbiba' => 62,
             'kpodemski' => 72,
+            'PululuK' => 27,
         ];
 
         $this->assertEquals($expected, TeamHelper::reorderByTeamOrder($input));

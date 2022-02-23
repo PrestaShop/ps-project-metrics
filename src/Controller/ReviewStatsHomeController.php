@@ -61,7 +61,7 @@ class ReviewStatsHomeController extends AbstractController
             'review_stats.html.twig',
             [
                 'weekendDays' => $weekendDays,
-                'teamMembers' => TeamHelper::getTeam(),
+                'teamMembers' => TeamHelper::getConfiguration(),
                 'lastSeven' => $lastSevenAndDays,
                 'lastThirty' => $lastThirtyDays,
             ]

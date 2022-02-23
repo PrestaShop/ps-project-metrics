@@ -4,6 +4,23 @@
 #}
 {% extends 'base.html.twig' %}
 
+{% macro displayInBadge(content, badge, withStar = false) %}
+  <span class="badge {{ badge }}">
+    {% if withStar %}
+      {{ _self.star_svg() }}
+    {% endif %}
+    {{ content }}
+  </span>
+{% endmacro %}
+
+{% macro star_svg() %}
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star"
+       viewBox="0 0 16 16">
+    <path
+        d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+  </svg>
+{% endmacro %}
+
 {% block page_header %}
   <div class="page-title">
     <img src="/img/fruitpassion.png" width="50px" height="50px" class="sticker-image"/>
@@ -27,6 +44,7 @@
 {% endblock %}
 
 {% block page_content %}
+
   <div>
     <h2>Last seven days</h2>
   </div>
@@ -52,28 +70,34 @@
           <a href="{{ path('app_view_developer', {login: login}) }}">{{ login }}</a>
         </th>
 
+        {% set displayBadge = teamMembers[login]['full-time'] %}
+
         {% for key, total in data %}
           <td>
             {% if key == 'total' %}
-              <span class="badge bg-secondary">{{ total }}</span>
+              {{ _self.displayInBadge(total, 'bg-secondary') }}
             {% else %}
-              {% if (total == 'no_data' ) %}
+              {% if (total == 'no_data') %}
                 {% if (key in weekendDays ) %}
-                  <span class="badge bg-info">(w-e)</span>
+                  {% set label = '(w-e)' %}
+                  {% set badge = 'bg-info' %}
                 {% else %}
-                  <span class="badge bg-secondary">(n/a)</span>
+                  {% set label = '(n/a)' %}
+                  {% set badge = 'bg-secondary' %}
                 {% endif %}
+                {% if (displayBadge == true ) %}
+                  {{ _self.displayInBadge(label, badge) }}
+                {% else %}
+                  <span>{{ label }}</span>
+                {% endif %}
+              {% elseif (displayBadge == false ) %}
+                <span>{{ total }}</span>
               {% elseif (total <= 2 ) %}
-                <span class="badge bg-danger">{{ total }}</span>
+                {{ _self.displayInBadge(total, 'bg-danger') }}
               {% elseif (total <= 4 ) %}
-                <span class="badge bg-warning">{{ total }}</span>
+                {{ _self.displayInBadge(total, 'bg-warning') }}
               {% elseif (total >= 20 ) %}
-                <span class="badge bg-success">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star"
-                 viewBox="0 0 16 16">
-              <path
-                  d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
-            </svg>{{ total }}</span>
+                {{ _self.displayInBadge(total, 'bg-success', true) }}
               {% else %}
                 <span>{{ total }}</span>
               {% endif %}
@@ -93,7 +117,9 @@
     <thead>
     <tr>
       <th scope="col">#</th>
-      {% for teamMember in teamMembers %}
+      {% set teamMembersIndexedByInt = [] %}
+      {% for teamMember, isFullTime in teamMembers %}
+        {% set teamMembersIndexedByInt = teamMembersIndexedByInt|merge([isFullTime['full-time']]) %}
         <th scope="col">{{ teamMember }}</th>
       {% endfor %}
     </tr>
@@ -106,24 +132,34 @@
         </th>
 
         {% for total in data %}
+
+          {% set displayBadge = false %}
+          {% if teamMembersIndexedByInt[loop.index] is defined %}
+            {% set displayBadge = teamMembersIndexedByInt[loop.index-1] %}
+          {% endif %}
+
           <td>
-            {% if (total == 'no_data' ) %}
+            {% if (total == 'no_data') %}
               {% if (day in weekendDays ) %}
-                <span class="badge bg-info">(w-e)</span>
+                {% set label = '(w-e)' %}
+                {% set badge = 'bg-info' %}
               {% else %}
-                <span class="badge bg-secondary">(n/a)</span>
+                {% set label = '(n/a)' %}
+                {% set badge = 'bg-secondary' %}
               {% endif %}
+              {% if (displayBadge == true ) %}
+                {{ _self.displayInBadge(label, badge) }}
+              {% else %}
+                <span>{{ label }}</span>
+              {% endif %}
+            {% elseif (displayBadge == false ) %}
+              <span>{{ total }}</span>
             {% elseif (total <= 2 ) %}
-              <span class="badge bg-danger">{{ total }}</span>
+              {{ _self.displayInBadge(total, 'bg-danger') }}
             {% elseif (total <= 4 ) %}
-              <span class="badge bg-warning">{{ total }}</span>
+              {{ _self.displayInBadge(total, 'bg-warning') }}
             {% elseif (total >= 20 ) %}
-              <span class="badge bg-success">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star"
-                 viewBox="0 0 16 16">
-              <path
-                  d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
-            </svg>{{ total }}</span>
+              {{ _self.displayInBadge(total, 'bg-success', true) }}
             {% else %}
               <span>{{ total }}</span>
             {% endif %}
@@ -148,7 +184,6 @@
       <p>
         The code of this application is available on <a href="https://github.com/matks/ps-project-metrics">GitHub</a>.
       </p>
-    </div>
     </div>
   </footer>
 {% endblock %}
