@@ -4,6 +4,37 @@
 #}
 {% extends 'base.html.twig' %}
 
+{% macro displayReviewTotal(key, total, weekendDays, displayBadge) %}
+  {% if key == 'total' %}
+    {{ _self.displayInBadge(total, 'bg-secondary') }}
+  {% else %}
+    {% if (total == 'no_data') %}
+      {% if (key in weekendDays ) %}
+        {% set label = '(w-e)' %}
+        {% set badge = 'bg-info' %}
+      {% else %}
+        {% set label = '(n/a)' %}
+        {% set badge = 'bg-secondary' %}
+      {% endif %}
+      {% if (displayBadge == true ) %}
+        {{ _self.displayInBadge(label, badge) }}
+      {% else %}
+        <span>{{ label }}</span>
+      {% endif %}
+    {% elseif (displayBadge == false ) %}
+      <span>{{ total }}</span>
+    {% elseif (total <= 2 ) %}
+      {{ _self.displayInBadge(total, 'bg-danger') }}
+    {% elseif (total <= 4 ) %}
+      {{ _self.displayInBadge(total, 'bg-warning') }}
+    {% elseif (total >= 20 ) %}
+      {{ _self.displayInBadge(total, 'bg-success', true) }}
+    {% else %}
+      <span>{{ total }}</span>
+    {% endif %}
+  {% endif %}
+{% endmacro %}
+
 {% macro displayInBadge(content, badge, withStar = false) %}
   <span class="badge {{ badge }}">
     {% if withStar %}
@@ -73,36 +104,7 @@
         {% set displayBadge = teamMembers[login]['full-time'] %}
 
         {% for key, total in data %}
-          <td>
-            {% if key == 'total' %}
-              {{ _self.displayInBadge(total, 'bg-secondary') }}
-            {% else %}
-              {% if (total == 'no_data') %}
-                {% if (key in weekendDays ) %}
-                  {% set label = '(w-e)' %}
-                  {% set badge = 'bg-info' %}
-                {% else %}
-                  {% set label = '(n/a)' %}
-                  {% set badge = 'bg-secondary' %}
-                {% endif %}
-                {% if (displayBadge == true ) %}
-                  {{ _self.displayInBadge(label, badge) }}
-                {% else %}
-                  <span>{{ label }}</span>
-                {% endif %}
-              {% elseif (displayBadge == false ) %}
-                <span>{{ total }}</span>
-              {% elseif (total <= 2 ) %}
-                {{ _self.displayInBadge(total, 'bg-danger') }}
-              {% elseif (total <= 4 ) %}
-                {{ _self.displayInBadge(total, 'bg-warning') }}
-              {% elseif (total >= 20 ) %}
-                {{ _self.displayInBadge(total, 'bg-success', true) }}
-              {% else %}
-                <span>{{ total }}</span>
-              {% endif %}
-            {% endif %}
-          </td>
+          <td>{{ _self.displayReviewTotal(key, total, weekendDays, displayBadge) }}</td>
         {% endfor %}
       </tr>
     {% endfor %}
@@ -138,32 +140,7 @@
             {% set displayBadge = teamMembersIndexedByInt[loop.index-1] %}
           {% endif %}
 
-          <td>
-            {% if (total == 'no_data') %}
-              {% if (day in weekendDays ) %}
-                {% set label = '(w-e)' %}
-                {% set badge = 'bg-info' %}
-              {% else %}
-                {% set label = '(n/a)' %}
-                {% set badge = 'bg-secondary' %}
-              {% endif %}
-              {% if (displayBadge == true ) %}
-                {{ _self.displayInBadge(label, badge) }}
-              {% else %}
-                <span>{{ label }}</span>
-              {% endif %}
-            {% elseif (displayBadge == false ) %}
-              <span>{{ total }}</span>
-            {% elseif (total <= 2 ) %}
-              {{ _self.displayInBadge(total, 'bg-danger') }}
-            {% elseif (total <= 4 ) %}
-              {{ _self.displayInBadge(total, 'bg-warning') }}
-            {% elseif (total >= 20 ) %}
-              {{ _self.displayInBadge(total, 'bg-success', true) }}
-            {% else %}
-              <span>{{ total }}</span>
-            {% endif %}
-          </td>
+          <td>{{ _self.displayReviewTotal(day, total, weekendDays, displayBadge) }}</td>
         {% endfor %}
       </tr>
     {% endfor %}
