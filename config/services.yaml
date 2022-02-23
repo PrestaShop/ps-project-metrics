@@ -34,6 +34,10 @@ services:
       - '@App\Helper\PRWaitingReviewStatusRecordService'
       - '@App\Helper\PRWaitingReviewStatusDeleteService'
 
+  App\Command\ComputePRReviewCommentStatsCommand:
+    arguments:
+      - '@App\Helper\PRReviewCommentStatsComputeService'
+
   App\Database\MySQLPDOProvider:
     arguments:
       - '%env(resolve:APP_DB_HOST)%'
@@ -70,6 +74,12 @@ services:
   App\Helper\PRWaitingReviewStatusRecordService:
     arguments:
       - '%env(resolve:APP_GH_TOKEN)%'
+      - '@doctrine.orm.default_entity_manager'
+
+  App\Helper\PRReviewCommentStatsComputeService:
+    arguments:
+      - '%env(resolve:APP_GH_TOKEN)%'
+      - '@PDO'
       - '@doctrine.orm.default_entity_manager'
 
   PDO:
