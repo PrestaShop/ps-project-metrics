@@ -18,20 +18,12 @@ class TeamHelper
      */
     public static function getTeam(bool $asKeys = false): array
     {
-        $team = [
-            'PierreRambaud' => [],      # Pierre R.
-            'matks' => [],              # Mathieu F.
-            'jolelievre' => [],         # Jonathan L.
-            'matthieu-rolland' => [],   # Matthieu R.
-            'Progi1984' => [],          # Franck L.
-            'atomiix' => [],            # Thomas B.
-            'NeOMakinG' => [],          # Valentin S.
-            'sowbiba' => [],            # Ibrahima S.
-            'kpodemski' => [],          # Krystian P.
-        ];
+        $team = self::getConfiguration();
 
         if ($asKeys) {
-            return $team;
+            return array_map((function () {
+                return [];
+            }), $team);
         }
 
         return array_keys($team);
@@ -51,5 +43,26 @@ class TeamHelper
         }
 
         return $reordered;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getConfiguration(): array
+    {
+        $team = [
+            'PierreRambaud' => ['full-time' => true],      # Pierre R.
+            'matks' => ['full-time' => true],              # Mathieu F.
+            'jolelievre' => ['full-time' => true],         # Jonathan L.
+            'matthieu-rolland' => ['full-time' => true],   # Matthieu R.
+            'Progi1984' => ['full-time' => true],          # Franck L.
+            'atomiix' => ['full-time' => true],            # Thomas B.
+            'NeOMakinG' => ['full-time' => true],          # Valentin S.
+            'sowbiba' => ['full-time' => false],           # Ibrahima S.
+            'kpodemski' => ['full-time' => false],         # Krystian P.
+            'PululuK' => ['full-time' => false],           # Pululu K.
+        ];
+
+        return $team;
     }
 }
