@@ -1,4 +1,4 @@
-# fruitdelapassion application
+# PrestaShop Project Metrics application
 
 [![PHPUnit tests](https://github.com/matks/fruitdelapassion/actions/workflows/phpunit.yml/badge.svg)](https://github.com/matks/fruitdelapassion/actions/workflows/phpunit.yml)
 [![PHPStan](https://github.com/matks/fruitdelapassion/actions/workflows/phpstan.yml/badge.svg)](https://github.com/matks/fruitdelapassion/actions/workflows/phpstan.yml)
