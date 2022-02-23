@@ -18,6 +18,8 @@ use Doctrine\ORM\Mapping as ORM;
 class PRReviewComment
 {
     public const TYPE_PR_REVIEW_COMMENT = 'pr_review_comment';
+    public const TYPE_PR_REVIEW_MAIN_MESSAGE = 'pr_review_comment_main_message';
+
 
     /**
      * @var int
