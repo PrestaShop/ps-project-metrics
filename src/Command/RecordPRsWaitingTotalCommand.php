@@ -25,7 +25,7 @@ class RecordPRsWaitingTotalCommand extends Command
     private PRsWaitingRecordService $recordService;
 
     /** @var string */
-    protected static $defaultName = 'matks:prs-waiting-stats:record';
+    protected static $defaultName = 'ps:prs-waiting-stats:record';
 
     /**
      * @param PRsWaitingRecordService $recordService

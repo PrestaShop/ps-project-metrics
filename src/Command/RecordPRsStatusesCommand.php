@@ -21,7 +21,7 @@ use DateTime;
 class RecordPRsStatusesCommand extends Command
 {
     /** @var string */
-    protected static $defaultName = 'matks:prs-statuses:record';
+    protected static $defaultName = 'ps:prs-statuses:record';
 
     /**
      * @var PRWaitingReviewStatusRecordService

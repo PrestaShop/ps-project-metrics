@@ -2,7 +2,7 @@
 
 ## Collection
 
-Data collection triggered by console Command `php bin/console matks:prs-waiting-stats:record`
+Data collection triggered by console Command `php bin/console ps:prs-waiting-stats:record`
 
 Data is collected from GitHub using REST API
 
