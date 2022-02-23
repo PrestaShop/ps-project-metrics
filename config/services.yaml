@@ -18,6 +18,8 @@ services:
       - '@App\Helper\PRWaitingReviewStatusListingService'
 
   App\Controller\ReceiveGitHubWebHookController:
+    arguments:
+      - '@doctrine.orm.default_entity_manager'
 
   App\Command\RecordReviewsCommand:
     arguments:
