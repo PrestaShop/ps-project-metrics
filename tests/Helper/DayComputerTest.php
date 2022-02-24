@@ -124,4 +124,68 @@ class DayComputerTest extends TestCase
             DayComputer::buildArrayOfDatesFromTo($dateTime1, $dateTime3)
         );
     }
+
+    public function testGetSundayBefore(): void
+    {
+        $this->assertEquals(
+            new DateTime('2022-02-20 05:00:00'),
+            DayComputer::getSundayBefore(new DateTime('2022-02-20 05:00:00'))
+        );
+
+        $this->assertEquals(
+            new DateTime('2022-02-20 05:00:00'),
+            DayComputer::getSundayBefore(new DateTime('2022-02-21 05:00:00'))
+        );
+
+        $this->assertEquals(
+            new DateTime('2022-02-20 05:00:00'),
+            DayComputer::getSundayBefore(new DateTime('2022-02-24 05:00:00'))
+        );
+
+        $this->assertEquals(
+            new DateTime('2022-02-20 05:00:00'),
+            DayComputer::getSundayBefore(new DateTime('2022-02-26 05:00:00'))
+        );
+
+        $this->assertEquals(
+            new DateTime('2022-02-06 05:00:00'),
+            DayComputer::getSundayBefore(new DateTime('2022-02-06 05:00:00'))
+        );
+
+        $this->assertEquals(
+            new DateTime('2022-02-13 02:00:00'),
+            DayComputer::getSundayBefore(new DateTime('2022-02-19 02:00:00'))
+        );
+    }
+
+    public function testGetOnePastWeekRange(): void
+    {
+        $this->assertEquals(
+            [['2022-02-14', '2022-02-20']],
+            DayComputer::getPastWeekRanges(1, new DateTime('2022-02-20 05:00:00'))
+        );
+
+        $this->assertEquals(
+            [['2022-01-31', '2022-02-06']],
+            DayComputer::getPastWeekRanges(1, new DateTime('2022-02-08 05:00:00'))
+        );
+
+        $this->assertEquals(
+            [['2022-01-24', '2022-01-30']],
+            DayComputer::getPastWeekRanges(1, new DateTime('2022-02-03 05:00:00'))
+        );
+    }
+
+    public function testGetMultiplePastWeekRange(): void
+    {
+        $this->assertEquals(
+            [['2022-01-10', '2022-01-16'], ['2022-01-17', '2022-01-23']],
+            DayComputer::getPastWeekRanges(2, new DateTime('2022-01-24 05:00:00'))
+        );
+
+        $this->assertEquals(
+            [['2021-12-20', '2021-12-26'], ['2021-12-27', '2022-01-02'], ['2022-01-03', '2022-01-09']],
+            DayComputer::getPastWeekRanges(3, new DateTime('2022-01-10 05:00:00'))
+        );
+    }
 }
