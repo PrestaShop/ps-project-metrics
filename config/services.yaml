@@ -38,6 +38,10 @@ services:
     arguments:
       - '@App\Helper\PRReviewCommentStatsComputeService'
 
+  App\Command\ComputeReviewsWeekStatsCommand:
+    arguments:
+      - '@App\Helper\ReviewWeekStatsComputeService'
+
   App\Database\MySQLPDOProvider:
     arguments:
       - '%env(resolve:APP_DB_HOST)%'
@@ -81,6 +85,10 @@ services:
       - '%env(resolve:APP_GH_TOKEN)%'
       - '@PDO'
       - '@doctrine.orm.default_entity_manager'
+
+  App\Helper\ReviewWeekStatsComputeService:
+    arguments:
+      - '@PDO'
 
   PDO:
     class: PDO

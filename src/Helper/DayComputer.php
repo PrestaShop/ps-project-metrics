@@ -27,13 +27,13 @@ class DayComputer
 
         switch ($weekDay) {
             case 0:
-                $previousWorkedDay->sub(new \DateInterval('P2D'));
+                $previousWorkedDay->sub(new DateInterval('P2D'));
                 return $previousWorkedDay;
             case 1:
-                $previousWorkedDay->sub(new \DateInterval('P3D'));
+                $previousWorkedDay->sub(new DateInterval('P3D'));
                 return $previousWorkedDay;
             default:
-                $previousWorkedDay->sub(new \DateInterval('P1D'));
+                $previousWorkedDay->sub(new DateInterval('P1D'));
                 return $previousWorkedDay;
         }
     }
@@ -48,7 +48,7 @@ class DayComputer
     public static function getXDayBefore(int $x, DateTime $dateTime): DateTime
     {
         $previousWorkedDay = clone $dateTime;
-        $previousWorkedDay->sub(new \DateInterval('P' . $x . 'D'));
+        $previousWorkedDay->sub(new DateInterval('P' . $x . 'D'));
 
         return $previousWorkedDay;
     }
@@ -79,5 +79,35 @@ class DayComputer
         $result[] = $to->format('Y-m-d');
 
         return $result;
+    }
+
+    public static function getSundayBefore(DateTime $day): DateTime
+    {
+        $weekDay = $day->format('w');
+
+        if ($weekDay === '0') {
+            return $day;
+        }
+
+        $result = clone $day;
+        $result->sub(new DateInterval('P' . $weekDay . 'D'));
+
+        return $result;
+    }
+
+    public static function getPastWeekRanges($numberOfWeeks, DateTime $day)
+    {
+        $sundayBefore = self::getSundayBefore($day);
+        $mondayBefore = self::getXDayBefore(6, $sundayBefore);
+
+        $result = [[$mondayBefore->format('Y-m-d'), $sundayBefore->format('Y-m-d')]];
+
+        for($i = 1; $i < $numberOfWeeks; $i++) {
+            $sundayBefore = self::getXDayBefore(7, $sundayBefore);
+            $mondayBefore = self::getXDayBefore(7, $mondayBefore);
+            $result[] = [$mondayBefore->format('Y-m-d'), $sundayBefore->format('Y-m-d')];
+        }
+
+        return array_reverse($result);
     }
 }
