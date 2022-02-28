@@ -1,7 +1,7 @@
 # PrestaShop Project Metrics application
 
-[![PHPUnit tests](https://github.com/matks/ps-project-metrics/actions/workflows/phpunit.yml/badge.svg)](https://github.com/matks/ps-project-metrics/actions/workflows/phpunit.yml)
-[![PHPStan](https://github.com/matks/ps-project-metrics/actions/workflows/phpstan.yml/badge.svg)](https://github.com/matks/ps-project-metrics/actions/workflows/phpstan.yml)
+[![PHPUnit tests](https://github.com/prestashop/ps-project-metrics/actions/workflows/phpunit.yml/badge.svg)](https://github.com/prestashop/ps-project-metrics/actions/workflows/phpunit.yml)
+[![PHPStan](https://github.com/prestashop/ps-project-metrics/actions/workflows/phpstan.yml/badge.svg)](https://github.com/prestashop/ps-project-metrics/actions/workflows/phpstan.yml)
 
 Symfony 5 application that collects and displays
 
@@ -106,4 +106,4 @@ vendor/bin/phpstan analyse -c phpstan.neon
 
 ## Documentation
 
-[Browse `/doc` folder](https://github.com/matks/ps-project-metrics/tree/master/doc)
+[Browse `/doc` folder](https://github.com/prestashop/ps-project-metrics/tree/master/doc)
