@@ -44,12 +44,6 @@ class RecordReviewsCommand extends Command
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'Dry run'
-            )
-            ->addOption(
-                'no-weekend',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'Dont run on weekend'
             );
     }
 
@@ -64,17 +58,9 @@ class RecordReviewsCommand extends Command
         $dryRunOption = $input->getOption('dry-run');
         $isDryRun = ('false' !== $dryRunOption);
 
-        $noWeekendRunOption = $input->getOption('no-weekend');
-        $noWeekendRun = ('true' === $noWeekendRunOption);
-
         $day = new DateTime();
 
-        if (DayComputer::isItWeekend($day) && $noWeekendRun) {
-            $output->writeln('No run on the weekend');
-            return 0;
-        }
-
-        $previousWorkedDay = DayComputer::getPreviousWorkedDayFromDateTime($day);
+        $previousWorkedDay = DayComputer::getXDayBefore(1, $day);
         $output->writeln(sprintf(
             'Record reviews for %s (dry-run: %s)',
             $previousWorkedDay->format('Y-m-d'),
