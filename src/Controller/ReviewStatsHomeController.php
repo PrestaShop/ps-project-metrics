@@ -79,7 +79,11 @@ class ReviewStatsHomeController extends AbstractController
             throw $this->createNotFoundException('No developer');
         }
 
-        $developerStats = $this->statisticsService->getDeveloperStats($login);
+        $developerStats = $this->statisticsService->getDeveloperStats(
+            $login,
+            90,
+            new DateTime()
+        );
 
         return $this->render('developer_stats.html.twig',
             ['stats' => $developerStats, 'login' => $login]
