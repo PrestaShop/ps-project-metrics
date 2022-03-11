@@ -116,17 +116,18 @@ ORDER BY day DESC',
 
     /**
      * @param string $login
+     * @param int $howManyDays
+     * @param DateTime $endDate
      *
      * @return array<int, array<string, mixed>>
      */
-    public function getDeveloperStats(string $login): array
+    public function getDeveloperStats(string $login, int $howManyDays, DateTime $endDate): array
     {
-        $today = new DateTime();
-        $threeMonthBefore = DayComputer::getXDayBefore(90, $today);
+        $beginDate = DayComputer::getXDayBefore($howManyDays, $endDate);
 
         $sql = sprintf(
             'SELECT day, PR, total FROM reviews WHERE login = \'%s\' AND day BETWEEN \'%s\' AND \'%s\'
-ORDER BY day DESC', $login, $threeMonthBefore->format('Y-m-d'), $today->format('Y-m-d'));
+ORDER BY day DESC', $login, $beginDate->format('Y-m-d'), $endDate->format('Y-m-d'));
 
         $result = $this->pdo->query($sql)->fetchAll();
 
