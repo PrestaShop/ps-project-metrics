@@ -21,6 +21,10 @@ services:
     arguments:
       - '@doctrine.orm.default_entity_manager'
 
+  App\Controller\ReviewCommentsStatsController:
+    arguments:
+      - '@App\Helper\ReviewCommentStatsService'
+
   App\Command\RecordReviewsCommand:
     arguments:
       - '@App\Helper\ReviewRecordService'
@@ -87,6 +91,10 @@ services:
       - '@doctrine.orm.default_entity_manager'
 
   App\Helper\ReviewWeekStatsComputeService:
+    arguments:
+      - '@PDO'
+
+  App\Helper\ReviewCommentStatsService:
     arguments:
       - '@PDO'
 
