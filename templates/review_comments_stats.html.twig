@@ -1,0 +1,63 @@
+{#
+# For the full copyright and license information, please view the LICENSE
+# file that was distributed with this source code.
+#}
+{% extends 'base.html.twig' %}
+
+{% block page_header %}
+  <div class="page-title">
+    <img src="/img/fruitpassion.png" width="50px" height="50px" class="sticker-image"/>
+    <h1>Dashboard - Maintainers review comments daily stats</h1>
+  </div>
+{% endblock %}
+
+{% block page_info %}
+  <div class="jumbotron">
+    <h2>About this dashboard</h2>
+    <div>
+      This dashboard displays the review comments statistics collected day by day.
+      <br/><br/>
+      This is an attempt to monitor pull request review comments. However it seems GitHub considers plenty
+      of things are review comments.
+    </div>
+  </div>
+{% endblock %}
+
+{% block page_content %}
+  <div>
+    <h2>Last thirty days</h2>
+  </div>
+
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      {% for teamMember, isFullTime in teamMembers %}
+        <th scope="col">
+          <a href="{{ path('app_view_prs_comment_developer', {login: teamMember}) }}">{{ teamMember }}
+          </a>
+        </th>
+      {% endfor %}
+    </tr>
+    </thead>
+    <tbody>
+    {% for day, data in stats %}
+      <tr>
+        <th scope="row">
+          {{ day }}
+        </th>
+
+        {% for total in data %}
+          <td>{{ total }}</td>
+        {% endfor %}
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+
+{% block footer %}
+  <footer>
+
+  </footer>
+{% endblock %}

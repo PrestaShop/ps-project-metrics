@@ -17,3 +17,11 @@ app_view_prs_waiting_review_status:
 app_receive_github_webhook:
     path: /github_webhook
     controller: App\Controller\ReceiveGitHubWebHookController::receive
+
+app_view_prs_comment_stats:
+    path: /prs_comment_stats
+    controller: App\Controller\ReviewCommentsStatsController::viewStats
+
+app_view_prs_comment_developer:
+    path: /prs_comment_developer/{login}
+    controller: App\Controller\ReviewCommentsStatsController::viewDeveloper
