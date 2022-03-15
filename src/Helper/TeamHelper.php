@@ -52,7 +52,7 @@ class TeamHelper
     {
         $team = [
             'PierreRambaud' => ['full-time' => true],      # Pierre R.
-            'matks' => ['full-time' => true],              # Mathieu F.
+            'matks' => ['full-time' => false],             # Mathieu F.
             'jolelievre' => ['full-time' => true],         # Jonathan L.
             'matthieu-rolland' => ['full-time' => true],   # Matthieu R.
             'Progi1984' => ['full-time' => true],          # Franck L.

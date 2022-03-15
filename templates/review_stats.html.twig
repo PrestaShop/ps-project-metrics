@@ -23,6 +23,14 @@
       {% endif %}
     {% elseif (displayBadge == false ) %}
       <span>{{ total }}</span>
+    {% elseif (total == 0 ) and (key in weekendDays ) %}
+        {% set label = '(w-e)' %}
+        {% set badge = 'bg-info' %}
+        {% if (displayBadge == true ) %}
+          {{ _self.displayInBadge(label, badge) }}
+        {% else %}
+          <span>{{ label }}</span>
+        {% endif %}
     {% elseif (total <= 2 ) %}
       {{ _self.displayInBadge(total, 'bg-danger') }}
     {% elseif (total <= 4 ) %}
