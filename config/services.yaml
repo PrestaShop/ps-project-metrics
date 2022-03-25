@@ -46,6 +46,10 @@ services:
     arguments:
       - '@App\Helper\ReviewWeekStatsComputeService'
 
+  App\Command\DeleteOldReviewCommentsCommand:
+    arguments:
+      - '@App\Helper\ReviewCommentsDeleteService'
+
   App\Database\MySQLPDOProvider:
     arguments:
       - '%env(resolve:APP_DB_HOST)%'
@@ -95,6 +99,10 @@ services:
       - '@PDO'
 
   App\Helper\ReviewCommentStatsService:
+    arguments:
+      - '@PDO'
+
+  App\Helper\ReviewCommentsDeleteService:
     arguments:
       - '@PDO'
 

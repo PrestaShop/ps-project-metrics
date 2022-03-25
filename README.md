@@ -64,7 +64,7 @@ Example with Symfony built-in server:
 symfony server:start
 ```
 
-### Collect statistics
+### Collect statistics and manage data
 
 ```
 # To collect Maintainers review daily statistics ; run once a day
@@ -78,9 +78,12 @@ php bin/console ps:prs-statuses:record
 
 # To collect pull request review comments statistics ; run once a day
 php bin/console ps:pr-review-comment-stats:compute
+
+# To delete old pull request review comments ; run once a day
+php bin/console ps:pr-review-comment:delete-old
 ```
 
-Each command can be triggered as dry-run (does not persist data) or not. Default is dry-run enabled, so in order to
+Most commands can be triggered as dry-run (does not persist data) or not. Default is dry-run enabled, so in order to
 persist the data you need to add `--dry-run=false`:
 
 ```

@@ -13,3 +13,5 @@ Statistics computation is done once a day, to collect data from the day before.
 Webhook data older than 3 days is deleted once a day.
 
 ## Display
+
+Last 30 days of computed statistics data is displayed on a web page.
