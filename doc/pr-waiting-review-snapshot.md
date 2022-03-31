@@ -16,3 +16,9 @@ Collection is done every hour because this is a snapshot. Each data collection e
 ## Display
 
 All PRs are displayed on a web page.
+
+At the top total numbers are displayed.
+
+Then are displayed PRs never reviewed. Down are displayed PRs, the ones which have not been reviewed for a long time first.
+
+Each PR provides 3 information: how long since last review, how long since last commit, is that a PR from the maintainer team.

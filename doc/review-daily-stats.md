@@ -37,3 +37,5 @@ First block is a view of the last 7 days, columns are days, rows are maintainers
 Second block is the next 23 days, columns are maintainers, rows are days.
 
 You can click on a maintainer name to see the details of collected review data.
+
+Badges help monitoring numbers. If a maintainer reviewed some PRs during the week-end they are displayed, else they are not (week-end are supposed to be off :D.
