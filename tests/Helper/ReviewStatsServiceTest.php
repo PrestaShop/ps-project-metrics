@@ -38,11 +38,13 @@ class ReviewStatsServiceTest extends KernelTestCase
 
         $statsService = new ReviewStatsService($this->getPDO());
 
-        $stats = $statsService->getDeveloperStats(
+        $result = $statsService->getDeveloperStats(
             'matks',
             10,
             new DateTime('2021-12-06')
         );
+
+        $stats = $result['dayByDayStats'];
 
         $this->assertEquals($stats[0]['day'], '2021-12-05');
         $this->assertEquals($stats[0]['total'], 2);
@@ -56,11 +58,13 @@ class ReviewStatsServiceTest extends KernelTestCase
 
         $statsService = new ReviewStatsService($this->getPDO());
 
-        $stats = $statsService->getDeveloperStats(
+        $result = $statsService->getDeveloperStats(
             'PierreRambaud',
             10,
             new DateTime('2021-12-06')
         );
+
+        $stats = $result['dayByDayStats'];
 
         $this->assertEquals($stats[0]['day'], '2021-12-02');
         $this->assertEquals($stats[0]['total'], 20);

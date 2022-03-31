@@ -12,21 +12,47 @@
 {% endblock %}
 
 {% block page_info %}
-<div class="jumbotron">
-  <h2>About this dashboard</h2>
-  <div>
-    You can see the same data on your personal GitHub page:
-    <a href="https://github.com/{{ login }}">https://github.com/{{ login }}</a>
+  <div class="jumbotron">
+    <h2>About this dashboard</h2>
+    <div>
+      You can see the same data on your personal GitHub page:
+      <a href="https://github.com/{{ login }}">https://github.com/{{ login }}</a>
+    </div>
   </div>
-</div>
 {% endblock %}
 
 {% block page_content %}
+
+  <div class="light-jumbotron container">
+    <h2>Week stats</h2>
+  </div>
+
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">Week</th>
+      <th scope="col">Total</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for weekStat in weekStats %}
+      <tr>
+        <th scope="row"> {{ weekStat.number }}</th>
+        <td>{{ weekStat.total }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="light-jumbotron container">
+    <h2>Last 90 days</h2>
+  </div>
+
   <dl class="row">
-    {% for data in stats %}
+    {% for data in dayByDayStats %}
       <dt class="col-sm-4">On {{ data['day'] }} reviewed {{ data['total'] }} pull requests:</dt>
       <dd class="col-sm-8">
-           {{ data['PR'] | raw }}
+        {{ data['PR'] | raw }}
       </dd>
 
     {% endfor %}

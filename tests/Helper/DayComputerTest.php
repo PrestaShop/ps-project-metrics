@@ -188,4 +188,17 @@ class DayComputerTest extends TestCase
             DayComputer::getPastWeekRanges(3, new DateTime('2022-01-10 05:00:00'))
         );
     }
+
+    public function testFindWeekNumber(): void
+    {
+        $dateTime1 = new DateTime('2022-03-21 05:00:00');
+        $dateTime2 = new DateTime('2022-03-22 05:00:00');
+        $dateTime3 = new DateTime('2022-03-27 05:00:00');
+        $dateTime4 = new DateTime('2022-03-20 05:00:00');
+
+        $this->assertEquals(12, DayComputer::findWeekNumber($dateTime1));
+        $this->assertEquals(12, DayComputer::findWeekNumber($dateTime2));
+        $this->assertEquals(12, DayComputer::findWeekNumber($dateTime3));
+        $this->assertEquals(11, DayComputer::findWeekNumber($dateTime4));
+    }
 }
