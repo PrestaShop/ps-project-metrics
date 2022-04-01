@@ -110,4 +110,9 @@ class DayComputer
 
         return array_reverse($result);
     }
+
+    public static function findWeekNumber(DateTime $date): int
+    {
+        return (int) $date->format("W");
+    }
 }

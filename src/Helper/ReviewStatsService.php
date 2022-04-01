@@ -119,7 +119,7 @@ ORDER BY day DESC',
      * @param int $howManyDays
      * @param DateTime $endDate
      *
-     * @return array<int, array<string, mixed>>
+     * @return array
      */
     public function getDeveloperStats(string $login, int $howManyDays, DateTime $endDate): array
     {
@@ -131,37 +131,27 @@ ORDER BY day DESC', $login, $beginDate->format('Y-m-d'), $endDate->format('Y-m-d
 
         $result = $this->pdo->query($sql)->fetchAll();
 
-        $cleanResult = [];
-        foreach ($result as $item) {
-            $cleanResult[] = [
-                'day' => $item['day'],
-                'PR' => $this->formatPRs($item['PR']),
-                'total' => $item['total'],
+        $weekRanges = DayComputer::getPastWeekRanges(12, DayComputer::getSundayBefore($endDate));
+        $weekRangesTotals = [];
+        foreach ($weekRanges as $weekRange) {
+            $weekRangesTotals[] = [
+                'begin' => new DateTime($weekRange[0]),
+                'end' => new DateTime($weekRange[1]),
+                'number' => DayComputer::findWeekNumber(new DateTime($weekRange[0])),
+                'total' => 0
             ];
         }
 
-        return $cleanResult;
-    }
-
-    /**
-     * @param array<string, array<string, int>> $groupedByLogin
-     * @param string $login
-     * @param string $day
-     * @param int $total
-     *
-     * @return array<string, array<string, int>>
-     */
-    private function addOrInsert(array $groupedByLogin, string $login, string $day, int $total): array
-    {
-        if (!array_key_exists($login, $groupedByLogin)) {
-            $groupedByLogin[$login] = [];
+        $dayByDayStats = [];
+        foreach ($result as $item) {
+            $dayByDayStats[] = $this->buildDayStat($item);
+            $weekRangesTotals = $this->insertIntoWeekStat($item, $weekRangesTotals);
         }
-        if (!array_key_exists($day, $groupedByLogin[$login])) {
-            $groupedByLogin[$login][$day] = [];
-        }
-        $groupedByLogin[$login][$day] = $total;
 
-        return $groupedByLogin;
+        return [
+            'dayByDayStats' => $dayByDayStats,
+            'weekStats' => $weekRangesTotals,
+        ];
     }
 
     /**
@@ -226,4 +216,28 @@ ORDER BY day DESC', $login, $beginDate->format('Y-m-d'), $endDate->format('Y-m-d
 
         return $copy;
     }
+
+    private function buildDayStat(array $item): array
+    {
+        return [
+            'day' => $item['day'],
+            'PR' => $this->formatPRs($item['PR']),
+            'total' => $item['total'],
+        ];
+    }
+
+    private function insertIntoWeekStat(array $item, array $weekRangesTotals): array
+    {
+        $day = new DateTime($item['day']);
+        foreach ($weekRangesTotals as $i => $weekRangesTotal) {
+            if ($day >= $weekRangesTotal['begin'] && $day <= $weekRangesTotal['end']) {
+                $weekRangesTotals[$i]['total'] += (int) $item['total'];
+                break;
+            }
+        }
+
+        return $weekRangesTotals;
+    }
+
+
 }

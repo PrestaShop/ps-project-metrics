@@ -86,7 +86,11 @@ class ReviewStatsHomeController extends AbstractController
         );
 
         return $this->render('developer_stats.html.twig',
-            ['stats' => $developerStats, 'login' => $login]
+            [
+                'login' => $login,
+                'dayByDayStats' => $developerStats['dayByDayStats'],
+                'weekStats' => array_reverse($developerStats['weekStats']),
+            ]
         );
     }
 }
