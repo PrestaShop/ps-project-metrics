@@ -27,7 +27,7 @@ class PRStatsHelper
         }
 
         $mapping = [
-            PRWaitingStat::PR_WAITING_FOR_REVIEW => 'q=org%3APrestaShop+is%3Apr+is%3Aopen+review%3Arequired+archived%3Afalse',
+            PRWaitingStat::PR_WAITING_FOR_REVIEW => 'q=org%3APrestaShop+is%3Apr+is%3Aopen+-label%3A%22waiting+for+QA%22+-label%3A%22waiting+for+UX%22+-label%3A%22waiting+for+author%22+-label%3A%22waiting+for+PM%22+-label%3A%22waiting+for+rebase%22+-label%3A%22QA+%E2%9C%94%EF%B8%8F%22+-label%3AWIP+archived%3Afalse+-repo%3Aprestashop%2Fprestashop-specs+draft%3Afalse',
             PRWaitingStat::PR_WAITING_FOR_QA => 'q=org%3APrestaShop+is%3Apr+is%3Aopen+label%3A"Waiting+for+QA"+archived%3Afalse',
             PRWaitingStat::PR_WAITING_FOR_PM => 'q=org%3APrestaShop+is%3Apr+is%3Aopen+label%3A"Waiting+for+PM"+archived%3Afalse',
             PRWaitingStat::PR_WAITING_FOR_DEV => 'q=org%3APrestaShop+is%3Apr+is%3Aopen+label%3A"Waiting+for+dev"+archived%3Afalse+sort%3Aupdated-asc',

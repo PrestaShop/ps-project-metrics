@@ -43,7 +43,7 @@ class PRWaitingReviewStatusRecordService
      */
     public static function getURL($forAPI = false): string
     {
-        $filters = 'q=is%3Aopen+is%3Apr+org%3APrestaShop+is%3Apr+is%3Aopen+review%3Arequired+draft%3Afalse+-label%3A%22Waiting+for+author%22+';
+        $filters = 'https://github.com/pulls?page=1&q=org%3APrestaShop+is%3Apr+is%3Aopen+-label%3A%22waiting+for+QA%22+-label%3A%22waiting+for+UX%22+-label%3A%22waiting+for+author%22+-label%3A%22waiting+for+PM%22+-label%3A%22waiting+for+rebase%22+-label%3A%22QA+%E2%9C%94%EF%B8%8F%22+-label%3AWIP+archived%3Afalse+-repo%3Aprestashop%2Fprestashop-specs+draft%3Afalse';
 
         if ($forAPI) {
             return 'https://api.github.com/search/issues?per_page=100&' . $filters;
