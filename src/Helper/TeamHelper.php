@@ -51,7 +51,6 @@ class TeamHelper
     public static function getConfiguration(): array
     {
         $team = [
-            'PierreRambaud' => ['full-time' => true],      # Pierre R.
             'matks' => ['full-time' => false],             # Mathieu F.
             'jolelievre' => ['full-time' => true],         # Jonathan L.
             'matthieu-rolland' => ['full-time' => true],   # Matthieu R.

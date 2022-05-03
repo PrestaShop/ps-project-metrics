@@ -52,26 +52,6 @@ class ReviewStatsServiceTest extends KernelTestCase
         $this->assertEquals($stats[4]['total'], 1);
     }
 
-    public function testGetDeveloperStatsFromPierreRambaud(): void
-    {
-        $this->databaseTool->loadFixtures(['App\Database\DataFixtures\ReviewStatsFixtures']);
-
-        $statsService = new ReviewStatsService($this->getPDO());
-
-        $result = $statsService->getDeveloperStats(
-            'PierreRambaud',
-            10,
-            new DateTime('2021-12-06')
-        );
-
-        $stats = $result['dayByDayStats'];
-
-        $this->assertEquals($stats[0]['day'], '2021-12-02');
-        $this->assertEquals($stats[0]['total'], 20);
-        $this->assertEquals($stats[1]['day'], '2021-12-01');
-        $this->assertEquals($stats[1]['total'], 10);
-    }
-
     public function testGetTeamStatsGroupedByLogin(): void
     {
         $this->databaseTool->loadFixtures(['App\Database\DataFixtures\ReviewStatsFixtures']);
@@ -97,14 +77,6 @@ class ReviewStatsServiceTest extends KernelTestCase
             "2021-12-05",
         ],
             "lastSeven" => [
-                "PierreRambaud" => [
-                    "2021-12-01" => 10,
-                    "2021-12-02" => 20,
-                    "2021-12-03" => 'no_data',
-                    "2021-12-04" => 'no_data',
-                    "2021-12-05" => 'no_data',
-                    "total" => 30,
-                ],
                 "matks" => [
                     "2021-12-01" => 1,
                     "2021-12-02" => 2,
@@ -145,7 +117,6 @@ class ReviewStatsServiceTest extends KernelTestCase
 
         $expected = [
             "2021-12-05" => [
-                "PierreRambaud" => 'no_data',
                 "matks" => 2,
                 "jolelievre" => 'no_data',
                 "matthieu-rolland" => 'no_data',
@@ -157,7 +128,6 @@ class ReviewStatsServiceTest extends KernelTestCase
                 'PululuK' => 'no_data',
             ],
             "2021-12-04" => [
-                "PierreRambaud" => 'no_data',
                 "matks" => 4,
                 "jolelievre" => 'no_data',
                 "matthieu-rolland" => 'no_data',
@@ -169,7 +139,6 @@ class ReviewStatsServiceTest extends KernelTestCase
                 'PululuK' => 'no_data',
             ],
             "2021-12-03" => [
-                "PierreRambaud" => 'no_data',
                 "matks" => 3,
                 "jolelievre" => 'no_data',
                 "matthieu-rolland" => 'no_data',
@@ -181,7 +150,6 @@ class ReviewStatsServiceTest extends KernelTestCase
                 'PululuK' => 'no_data',
             ],
             "2021-12-02" => [
-                "PierreRambaud" => 20,
                 "matks" => 2,
                 "jolelievre" => 'no_data',
                 "matthieu-rolland" => 'no_data',
@@ -193,7 +161,6 @@ class ReviewStatsServiceTest extends KernelTestCase
                 'PululuK' => 'no_data',
             ],
             "2021-12-01" => [
-                "PierreRambaud" => 10,
                 "matks" => 1,
                 "jolelievre" => 'no_data',
                 "matthieu-rolland" => 'no_data',
