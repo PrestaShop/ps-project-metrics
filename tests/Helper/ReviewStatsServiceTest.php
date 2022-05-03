@@ -101,7 +101,7 @@ class ReviewStatsServiceTest extends KernelTestCase
                 'kpodemski' => $emptyData,
                 'PululuK' => $emptyData,
             ],
-            "totalTeam" => 51
+            "totalTeam" => 21
         ];
 
         $this->assertEquals($expected, $stats);

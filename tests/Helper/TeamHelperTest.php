@@ -17,12 +17,12 @@ class TeamHelperTest extends TestCase
     public function testGetTeam(): void
     {
         $expected = [
-            'matks',
             'jolelievre',
             'matthieu-rolland',
-            'Progi1984',
             'atomiix',
             'NeOMakinG',
+            'matks',
+            'Progi1984',
             'sowbiba',
             'kpodemski',
             'PululuK',
@@ -34,12 +34,12 @@ class TeamHelperTest extends TestCase
     public function testGetTeamAsKeys(): void
     {
         $expected = [
-            'matks' => [],              # Mathieu F.
             'jolelievre' => [],         # Jonathan L.
             'matthieu-rolland' => [],   # Matthieu R.
-            'Progi1984' => [],          # Franck L.
             'atomiix' => [],            # Thomas B.
             'NeOMakinG' => [],          # Valentin S.
+            'matks' => [],              # Mathieu F.
+            'Progi1984' => [],          # Franck L.
             'sowbiba' => [],            # Ibrahima S.
             'kpodemski' => [],          # Krystian P.
             'PululuK' => [],
