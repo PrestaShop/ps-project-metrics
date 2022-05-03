@@ -51,13 +51,12 @@ class TeamHelper
     public static function getConfiguration(): array
     {
         $team = [
-            'PierreRambaud' => ['full-time' => true],      # Pierre R.
-            'matks' => ['full-time' => false],             # Mathieu F.
             'jolelievre' => ['full-time' => true],         # Jonathan L.
             'matthieu-rolland' => ['full-time' => true],   # Matthieu R.
-            'Progi1984' => ['full-time' => true],          # Franck L.
             'atomiix' => ['full-time' => true],            # Thomas B.
             'NeOMakinG' => ['full-time' => true],          # Valentin S.
+            'matks' => ['full-time' => false],             # Mathieu F.
+            'Progi1984' => ['full-time' => false],         # Franck L.
             'sowbiba' => ['full-time' => false],           # Ibrahima S.
             'kpodemski' => ['full-time' => false],         # Krystian P.
             'PululuK' => ['full-time' => false],           # Pululu K.

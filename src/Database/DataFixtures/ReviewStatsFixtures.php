@@ -28,9 +28,6 @@ class ReviewStatsFixtures extends Fixture
         $manager->persist(new ReviewStat('matks', '"ABD","ABA","ABC","ABI"', new DateTime('2021-12-04'), 4));
         $manager->persist(new ReviewStat('matks', '"ABC","ABD"', new DateTime('2021-12-05'), 2));
 
-        $manager->persist(new ReviewStat('PierreRambaud', '"ABC"', new DateTime('2021-12-01'), 10));
-        $manager->persist(new ReviewStat('PierreRambaud', '"ABC","ABD"', new DateTime('2021-12-02'), 20));
-
         $manager->persist(new ReviewStat('atomiix', '"ABD","ABA","ABE"', new DateTime('2021-12-01'), 3));
         $manager->persist(new ReviewStat('atomiix', '"ABD","ABA","ABC","ABI"', new DateTime('2021-12-03'), 4));
         $manager->persist(new ReviewStat('atomiix', '"ABC","ABD"', new DateTime('2021-12-05'), 2));
