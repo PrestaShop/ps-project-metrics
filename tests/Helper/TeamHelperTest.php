@@ -22,7 +22,6 @@ class TeamHelperTest extends TestCase
             'atomiix',
             'NeOMakinG',
             'matks',
-            'Progi1984',
             'sowbiba',
             'kpodemski',
             'PululuK',
@@ -39,7 +38,6 @@ class TeamHelperTest extends TestCase
             'atomiix' => [],            # Thomas B.
             'NeOMakinG' => [],          # Valentin S.
             'matks' => [],              # Mathieu F.
-            'Progi1984' => [],          # Franck L.
             'sowbiba' => [],            # Ibrahima S.
             'kpodemski' => [],          # Krystian P.
             'PululuK' => [],
@@ -55,7 +53,6 @@ class TeamHelperTest extends TestCase
             'matks' => 1,
             'sowbiba' => 62,
             'jolelievre' => 28,
-            'Progi1984' => 91,
             'PululuK' => 27,
             'atomiix' => 82,
             'NeOMakinG' => 2,
@@ -67,7 +64,6 @@ class TeamHelperTest extends TestCase
             'matks' => 1,
             'jolelievre' => 28,
             'matthieu-rolland' => 29,
-            'Progi1984' => 91,
             'atomiix' => 82,
             'NeOMakinG' => 2,
             'sowbiba' => 62,

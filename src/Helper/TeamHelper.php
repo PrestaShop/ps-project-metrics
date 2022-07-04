@@ -56,7 +56,6 @@ class TeamHelper
             'atomiix' => ['full-time' => true],            # Thomas B.
             'NeOMakinG' => ['full-time' => true],          # Valentin S.
             'matks' => ['full-time' => false],             # Mathieu F.
-            'Progi1984' => ['full-time' => false],         # Franck L.
             'sowbiba' => ['full-time' => false],           # Ibrahima S.
             'kpodemski' => ['full-time' => false],         # Krystian P.
             'PululuK' => ['full-time' => false],           # Pululu K.
