@@ -12,7 +12,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Reviews
  *
- * @ORM\Table(name="reviews")
+ * @ORM\Table(name="reviews", uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="login_day_unique", columns={"login", "day"})
+ * })
  * @ORM\Entity
  */
 class ReviewStat
@@ -50,21 +52,30 @@ class ReviewStat
     /**
      * @var int|null
      *
-     * @ORM\Column(name="total", type="integer", nullable=true)
+     * @ORM\Column(name="total_peers", type="integer", nullable=true)
      */
-    private $total;
+    private $total_peers;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(name="total_community", type="integer", nullable=true)
+     */
+    private $total_community;
 
     /**
      * @param string|null $login
      * @param string|null $pr
      * @param \DateTime|null $day
-     * @param int|null $total
+     * @param int|null $total_peers
+     * @param int|null $total_community
      */
-    public function __construct(?string $login, ?string $pr, ?\DateTime $day, ?int $total)
+    public function __construct(?string $login, ?string $pr, ?\DateTime $day, ?int $total_peers, ?int $total_community)
     {
         $this->login = $login;
         $this->pr = $pr;
         $this->day = $day;
-        $this->total = $total;
+        $this->total_peers = $total_peers;
+        $this->total_community = $total_community;
     }
 }

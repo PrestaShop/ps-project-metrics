@@ -59,6 +59,18 @@ class TeamHelper
             'sowbiba' => ['full-time' => false],           # Ibrahima S.
             'kpodemski' => ['full-time' => false],         # Krystian P.
             'PululuK' => ['full-time' => false],           # Pululu K.
+            'nicosomb' => ['full-time' => true],           # Nicolas L.
+            'FabienPapet' => ['full-time' => true],        # Fabien P.
+            'mflasquin' => ['full-time' => true],          # Maxime F.
+            'lartist' => ['full-time' => true],            # Salim B.
+            '0x346e3730' => ['full-time' => true],         # Antonin C.
+            'eternoendless' => ['full-time' => true],      # Antonin C.
+            'boubkerbribri' => ['full-time' => true],      # Boubker B.
+            'SharakPL' => ['full-time' => false],          # Tomasz Z.
+            'Hlavtox' => ['full-time' => false],           # Daniel H.
+            'zuk3975' => ['full-time' => false],           # Julius Z.
+            'marsaldev' => ['full-time' => false],         # Marco S.
+            'mparvazi' => ['full-time' => false],          # Mahmoud P.
         ];
 
         return $team;
