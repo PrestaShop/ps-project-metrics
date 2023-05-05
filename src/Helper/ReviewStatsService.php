@@ -37,7 +37,7 @@ class ReviewStatsService
     {
         $teamMembers = TeamHelper::getTeam();
 
-        $sql = sprintf('SELECT login, day, (total_peers + total_community) as total FROM reviews
+        $sql = sprintf('SELECT login, day, total_peers, total_community, (total_peers + total_community) as total FROM reviews
             WHERE login IN (%s)
             AND day BETWEEN \'%s\' AND \'%s\'
             ORDER BY day DESC',
@@ -60,16 +60,17 @@ class ReviewStatsService
             $itemDay = $item['day'];
             $itemLogin = $item['login'];
 
-            $resultToBuild[$itemLogin][$itemDay] = (int)$item['total'];
+            $resultToBuild[$itemLogin][$itemDay] = (int) $item['total'];
             $total += (int)$item['total'];
         }
 
-        $resultToBuild = $this->computeAndInsertTotals($resultToBuild);
+        $totals = $this->computeTotals($sqlResult);
 
         return [
             'days' => $dateRange,
             'lastSeven' => $resultToBuild,
             'totalTeam' => $total,
+            'totals' => $totals,
         ];
     }
 
@@ -196,27 +197,30 @@ ORDER BY day DESC', $login, $beginDate->format('Y-m-d'), $endDate->format('Y-m-d
     }
 
     /**
-     * @param array<string, array<string, mixed>> $groupedByLogin
+     * @param array<string, array<string, mixed>> $data
      *
      * @return array<string, array<string, int>>
      */
-    private function computeAndInsertTotals(array $groupedByLogin): array
+    private function computeTotals(array $data): array
     {
-        $copy = $groupedByLogin;
+        $totals = [];
 
-        foreach ($groupedByLogin as $login => $dayStats) {
-            $sum = 0;
-            foreach ($dayStats as $dayStat) {
-                if ($dayStat === 'no_data') {
-                    continue;
-                }
-
-                $sum += $dayStat;
+        foreach ($data as $item) {
+            $login = $item['login'];
+            if (!isset($totals[$login])) {
+                $totals[$login] = [
+                    'total_peers' => 0,
+                    'total_community' => 0,
+                    'total' => 0,
+                ];
             }
-            $copy[$login]['total'] = $sum;
+
+            $totals[$login]['total_peers'] += $item['total_peers'];
+            $totals[$login]['total_community'] += $item['total_community'];
+            $totals[$login]['total'] += $item['total'];
         }
 
-        return $copy;
+        return $totals;
     }
 
     private function buildDayStat(array $item): array
