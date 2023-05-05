@@ -31,6 +31,8 @@
     <thead>
     <tr>
       <th scope="col">Week</th>
+      <th scope="col">Total for peers</th>
+      <th scope="col">Total for community</th>
       <th scope="col">Total</th>
     </tr>
     </thead>
@@ -38,6 +40,8 @@
     {% for weekStat in weekStats %}
       <tr>
         <th scope="row"> {{ weekStat.number }}</th>
+        <td>{{ weekStat.total_peers }}</td>
+        <td>{{ weekStat.total_community }}</td>
         <td>{{ weekStat.total }}</td>
       </tr>
     {% endfor %}

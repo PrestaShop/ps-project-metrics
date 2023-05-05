@@ -63,12 +63,12 @@ class ReviewRecordService
                 true
             );
 
-            $urls = $this->extractPRUrls($dataFromAPI);
+            $urls = $this->extractPRUrls($dataFromAPI, $login);
 
             $output[] = sprintf(
                 '%s reviewed %d reviews on %s',
                 $login,
-                count($urls),
+                $urls['nb'],
                 $date
             );
             if (!$dryRun) {
@@ -83,18 +83,31 @@ class ReviewRecordService
 
     /**
      * @param string $login
-     * @param string[] $PRs
+     * @param array $PRs
      * @param string $date
      *
      * @throws \Doctrine\ORM\ORMException
      */
     private function insertReview(string $login, array $PRs, string $date): void
     {
+        // If we redo the stats we need to remove previous records from the day
+        $existingReviewStat = $this->entityManager->getRepository(ReviewStat::class)->findOneBy([
+            'login' => $login,
+            'day' => new DateTime($date),
+        ]);
+
+
+        if ($existingReviewStat !== null) {
+            $this->entityManager->remove($existingReviewStat);
+            $this->entityManager->flush();
+        }
+
         $reviewStatRecord = new ReviewStat(
             $login,
-            '"' . implode('";"', $PRs) . '"',
+            '"' . implode('";"', array_merge($PRs['peers'], $PRs['community'])) . '"',
             new DateTime($date),
-            count($PRs)
+            count($PRs['peers']),
+            count($PRs['community']),
         );
 
         $this->entityManager->persist($reviewStatRecord);
@@ -121,7 +134,10 @@ class ReviewRecordService
 		          node {
 		            occurredAt
 		            pullRequest {
-		              url
+		              url,
+                      author {
+                        login
+                      }
 		            }
 		          }
 		        }
@@ -161,18 +177,34 @@ class ReviewRecordService
     /**
      * @param array<string, mixed> $dataFromAPI
      *
-     * @return string[]
+     * @return array
      */
-    private function extractPRUrls(array $dataFromAPI): array
+    private function extractPRUrls(array $dataFromAPI, string $reviewer): array
     {
         $edges = reset($dataFromAPI['data']['user']['contributionsCollection']);
         $edge = reset($edges);
 
-        $urls = [];
+        $urls = [
+            'nb' => 0,
+            'peers' => [],
+            'community' => [],
+        ];
         foreach ($edge as $dataBag) {
             $PR = $dataBag['node']['pullRequest'];
             $url = $PR['url'];
-            $urls[] = $url;
+
+            // Skipping %s because it was a self-review
+            if ($PR['author']['login'] === $reviewer) {
+                continue;
+            }
+
+            if (in_array($PR['author']['login'], TeamHelper::getTeam(), true)) {
+                $urls['peers'][] = $url;
+            } else {
+                $urls['community'][] = $url;
+            }
+
+            $urls['nb']++;
         }
 
         return $urls;

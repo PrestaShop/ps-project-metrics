@@ -6,7 +6,13 @@
 
 {% macro displayReviewTotal(key, total, weekendDays, displayBadge) %}
   {% if key == 'total' %}
-    {{ _self.displayInBadge(total, 'bg-secondary') }}
+    {% set badge = 'bg-secondary' %}
+    {% if total == 0 %}
+      {% set badge = 'bg-danger' %}
+    {% elseif (total >= 10 ) %}
+      {% set badge = 'bg-success' %}
+    {% endif %}
+    {{ _self.displayInBadge(total, badge) }}
   {% else %}
     {% if (total == 'no_data') %}
       {% if (key in weekendDays ) %}
@@ -99,7 +105,9 @@
       {% for day in lastSeven.days %}
         <th scope="col">{{ day }}</th>
       {% endfor %}
-      <th scope="col">total</th>
+      <th scope="col" class="bg-dark text-white">for peers</th>
+      <th scope="col" class="bg-dark text-white">for community</th>
+      <th scope="col" class="bg-dark text-white">total</th>
     </tr>
     </thead>
     <tbody>
@@ -114,6 +122,10 @@
         {% for key, total in data %}
           <td>{{ _self.displayReviewTotal(key, total, weekendDays, displayBadge) }}</td>
         {% endfor %}
+        <td class="bg-light">{{ _self.displayReviewTotal('total', lastSeven['totals'][login]['total_peers'], weekendDays, displayBadge) }}</td>
+        <td class="bg-light">{{ _self.displayReviewTotal('total', lastSeven['totals'][login]['total_community'], weekendDays, displayBadge) }}</td>
+        <td class="bg-light">{{ _self.displayReviewTotal('total', lastSeven['totals'][login]['total'], weekendDays, displayBadge) }}</td>
+
       </tr>
     {% endfor %}
     </tbody>

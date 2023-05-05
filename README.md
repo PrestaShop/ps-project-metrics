@@ -50,6 +50,10 @@ APP_DB_PASSWORD=abcd
 APP_GH_TOKEN=ghp_abchdksjdkdjfhdjzdjdzdhazdazhduzdhzd
 ```
 
+### DB Installation
+
+`php bin/console doctrine:schema:update --force`
+
 ## Usage
 
 ### Browse statistics

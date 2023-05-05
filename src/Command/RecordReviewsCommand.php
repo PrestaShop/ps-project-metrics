@@ -9,13 +9,15 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use DateTime;
+use DatePeriod;
+use DateInterval;
 use App\Helper\DayComputer;
 use App\Helper\ReviewRecordService;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use DateTime;
 
 class RecordReviewsCommand extends Command
 {
@@ -44,6 +46,12 @@ class RecordReviewsCommand extends Command
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'Dry run'
+            )
+            ->addOption(
+                'start-date',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Start date'
             );
     }
 
@@ -58,16 +66,34 @@ class RecordReviewsCommand extends Command
         $dryRunOption = $input->getOption('dry-run');
         $isDryRun = ('false' !== $dryRunOption);
 
-        $day = new DateTime();
+        $startDate = $input->getOption('start-date');
 
-        $previousWorkedDay = DayComputer::getXDayBefore(1, $day);
-        $output->writeln(sprintf(
-            'Record reviews for %s (dry-run: %s)',
-            $previousWorkedDay->format('Y-m-d'),
-            ($isDryRun ? '<info>true</info>' : '<error>false</error>')
-        ));
+        if (!empty($startDate)) {
+            $startDate = new DateTime($startDate);
+            $endDate = new DateTime();
 
-        $recordLogs = $this->recordService->recordReviewsForDay($previousWorkedDay, $isDryRun);
+            $interval = new DateInterval('P1D');
+            $dateRange = new DatePeriod($startDate, $interval, $endDate);
+
+            foreach ($dateRange as $day) {
+                $output->writeln(sprintf(
+                    'Record reviews for %s (dry-run: %s)',
+                    $day->format('Y-m-d'),
+                    ($isDryRun ? '<info>true</info>' : '<error>false</error>')
+                ));
+
+                $recordLogs = $this->recordService->recordReviewsForDay($day, $isDryRun);
+            }
+        } else {
+            $day = new DateTime();
+            $day->modify('-1 day');
+            $output->writeln(sprintf(
+                'Record reviews for %s (dry-run: %s)',
+                $day->format('Y-m-d'),
+                ($isDryRun ? '<info>true</info>' : '<error>false</error>')
+            ));
+            $recordLogs = $this->recordService->recordReviewsForDay($day, $isDryRun);
+        }
 
         foreach ($recordLogs as $log) {
             $output->writeln($log);

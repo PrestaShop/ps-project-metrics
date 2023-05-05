@@ -37,10 +37,10 @@ class ReviewStatsService
     {
         $teamMembers = TeamHelper::getTeam();
 
-        $sql = sprintf('SELECT login, day, total FROM reviews
-WHERE login IN (%s)
-AND day BETWEEN \'%s\' AND \'%s\'
-ORDER BY day DESC',
+        $sql = sprintf('SELECT login, day, total_peers, total_community, (total_peers + total_community) as total FROM reviews
+            WHERE login IN (%s)
+            AND day BETWEEN \'%s\' AND \'%s\'
+            ORDER BY day DESC',
             '"' . implode('","', $teamMembers) . '"',
             $from->format('Y-m-d'),
             $to->format('Y-m-d')
@@ -60,16 +60,17 @@ ORDER BY day DESC',
             $itemDay = $item['day'];
             $itemLogin = $item['login'];
 
-            $resultToBuild[$itemLogin][$itemDay] = (int)$item['total'];
+            $resultToBuild[$itemLogin][$itemDay] = (int) $item['total'];
             $total += (int)$item['total'];
         }
 
-        $resultToBuild = $this->computeAndInsertTotals($resultToBuild);
+        $totals = $this->computeTotals($sqlResult);
 
         return [
             'days' => $dateRange,
             'lastSeven' => $resultToBuild,
             'totalTeam' => $total,
+            'totals' => $totals,
         ];
     }
 
@@ -83,10 +84,10 @@ ORDER BY day DESC',
     {
         $teamMembers = TeamHelper::getTeam();
 
-        $sql = sprintf('SELECT login, day, total FROM reviews
-WHERE login IN (%s)
-AND day BETWEEN \'%s\' AND \'%s\'
-ORDER BY day DESC',
+        $sql = sprintf('SELECT login, day, (total_peers + total_community) as total FROM reviews
+            WHERE login IN (%s)
+            AND day BETWEEN \'%s\' AND \'%s\'
+            ORDER BY day DESC',
             '"' . implode('","', $teamMembers) . '"',
             $from->format('Y-m-d'),
             $to->format('Y-m-d')
@@ -126,7 +127,7 @@ ORDER BY day DESC',
         $beginDate = DayComputer::getXDayBefore($howManyDays, $endDate);
 
         $sql = sprintf(
-            'SELECT day, PR, total FROM reviews WHERE login = \'%s\' AND day BETWEEN \'%s\' AND \'%s\'
+            'SELECT day, PR, total_peers, total_community, (total_peers + total_community) as total FROM reviews WHERE login = \'%s\' AND day BETWEEN \'%s\' AND \'%s\'
 ORDER BY day DESC', $login, $beginDate->format('Y-m-d'), $endDate->format('Y-m-d'));
 
         $result = $this->pdo->query($sql)->fetchAll();
@@ -138,7 +139,9 @@ ORDER BY day DESC', $login, $beginDate->format('Y-m-d'), $endDate->format('Y-m-d
                 'begin' => new DateTime($weekRange[0]),
                 'end' => new DateTime($weekRange[1]),
                 'number' => DayComputer::findWeekNumber(new DateTime($weekRange[0])),
-                'total' => 0
+                'total' => 0,
+                'total_peers' => 0,
+                'total_community' => 0,
             ];
         }
 
@@ -194,27 +197,30 @@ ORDER BY day DESC', $login, $beginDate->format('Y-m-d'), $endDate->format('Y-m-d
     }
 
     /**
-     * @param array<string, array<string, mixed>> $groupedByLogin
+     * @param array<string, array<string, mixed>> $data
      *
      * @return array<string, array<string, int>>
      */
-    private function computeAndInsertTotals(array $groupedByLogin): array
+    private function computeTotals(array $data): array
     {
-        $copy = $groupedByLogin;
+        $totals = [];
 
-        foreach ($groupedByLogin as $login => $dayStats) {
-            $sum = 0;
-            foreach ($dayStats as $dayStat) {
-                if ($dayStat === 'no_data') {
-                    continue;
-                }
-
-                $sum += $dayStat;
+        foreach ($data as $item) {
+            $login = $item['login'];
+            if (!isset($totals[$login])) {
+                $totals[$login] = [
+                    'total_peers' => 0,
+                    'total_community' => 0,
+                    'total' => 0,
+                ];
             }
-            $copy[$login]['total'] = $sum;
+
+            $totals[$login]['total_peers'] += $item['total_peers'];
+            $totals[$login]['total_community'] += $item['total_community'];
+            $totals[$login]['total'] += $item['total'];
         }
 
-        return $copy;
+        return $totals;
     }
 
     private function buildDayStat(array $item): array
@@ -223,6 +229,8 @@ ORDER BY day DESC', $login, $beginDate->format('Y-m-d'), $endDate->format('Y-m-d
             'day' => $item['day'],
             'PR' => $this->formatPRs($item['PR']),
             'total' => $item['total'],
+            'total_peers' => $item['total_peers'],
+            'total_community' => $item['total_community'],
         ];
     }
 
@@ -232,6 +240,8 @@ ORDER BY day DESC', $login, $beginDate->format('Y-m-d'), $endDate->format('Y-m-d
         foreach ($weekRangesTotals as $i => $weekRangesTotal) {
             if ($day >= $weekRangesTotal['begin'] && $day <= $weekRangesTotal['end']) {
                 $weekRangesTotals[$i]['total'] += (int) $item['total'];
+                $weekRangesTotals[$i]['total_peers'] += (int) $item['total_peers'];
+                $weekRangesTotals[$i]['total_community'] += (int) $item['total_community'];
                 break;
             }
         }
